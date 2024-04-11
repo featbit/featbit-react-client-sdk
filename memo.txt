@@ -1,0 +1,10 @@
+Publish the library
+1. npm publish --access public
+
+if see error: Hooks can only be called inside the body of a function component. just run the following command in the current folder.
+npm link ../ffc-js-client-sdk-react-demo/node_modules/react
+
+
+
+https://dev.to/alexeagleson/how-to-create-and-publish-a-react-component-library-2oe
+https://blog.logrocket.com/build-component-library-react-typescript/
