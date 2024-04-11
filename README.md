@@ -1,21 +1,13 @@
-Check this [repository](https://github.com/feature-flags-co/ffc-react-client-sdk-demo) for an demo
-
 ## Introduction
-This is the react client side SDK for the feature management platform [featureflag.co](https://www.featureflag.co). We will document all the methods available in this SDK, and detail how they work.
+This is the react client side SDK for the feature management platform [FeatBit](https://www.featbit.co). We will document all the methods available in this SDK, and detail how they work.
 
 > Be aware, this is a client side SDK, it is intended for use in a single-user context, which can be mobile, desktop or embeded applications. This SDK can only be ran in a browser environment, it is not suitable for React Native projects, React Native SDK will be available in our other repo.
 
 The React SDK is based on the JavaScript SDK  
-The React SDK builds on feature-flags.co's JavaScript SDK to provide a better integration for use in React applications. As a result, much of the JavaScript SDK functionality is also available for the React SDK to use. 
-Here are some useful topics:
+The React SDK builds on FeatBit's JavaScript SDK to provide a better integration for use in React applications. As a result, much of the JavaScript SDK functionality is also available for the React SDK to use. 
 
-- [Initializing the JavaScript client SDK](https://github.com/feature-flags-co/ffc-js-client-side-sdk#initializing-the-sdk)
-- [Activating developer mode](https://github.com/feature-flags-co/ffc-js-client-side-sdk#developer-mode)
-- [Bootstraping with feature flags](https://github.com/feature-flags-co/ffc-js-client-side-sdk#developer-mode)
-- [Switching to another user](https://github.com/feature-flags-co/ffc-js-client-side-sdk#set-the-user-after-initialization)
-
-The **ffcClient** in the current doc is the same object as **Ffc** in the ffc-js-client-side-sdk.
-To learn more about our JavaScript client SDK, please go to this repository [ffc-js-client-side-sdk](https://github.com/feature-flags-co/ffc-js-client-side-sdk)
+The **fbClient** in the current doc is the same object as **fbClient** in the featbit-js-client-sdk.
+To learn more about our JavaScript client SDK, please go to this repository [featbit-js-client-sdk](https://github.com/featbit/featbit-js-client-sdk)
 
 > SDK version compatibility  
 The React SDK is compatible with React version 16.3.0 and higher.
@@ -25,30 +17,30 @@ The React SDK offers two custom hooks. If you want to use these, then you must u
 ### Install
 npm
 ```
-npm install ffc-react-client-sdk
+npm install featbit-react-client-sdk
 ```
 
 yarn
 ```
-yarn add ffc-react-client-sdk
+yarn add featbit-react-client-sdk
 ```
 
 ### Initializing the SDK
 After you install the dependency, initialize the React SDK. You can do this in one of two ways:
 
-- Using the asyncWIthFbProvider function
+- Using the asyncWithFbProvider function
 - Using the withFbProvider function
 
 Both rely on React's Context API which lets you access your flags from any level of your component hierarchy.
 
-#### Initializing using asyncWIthFbProvider
+#### Initializing using asyncWithFbProvider
 
-The **asyncWIthFbProvider** function initializes the React SDK and returns a provider which is a React component. It is an async function. It accepts a **ProviderConfig** object.
+The **asyncWithFbProvider** function initializes the React SDK and returns a provider which is a React component. It is an async function. It accepts a **ProviderConfig** object.
 
-**asyncWIthFbProvider** cannot be deferred. You must initialize **asyncWIthFbProvider** at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of the app.
+**asyncWithFbProvider** cannot be deferred. You must initialize **asyncWithFbProvider** at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of the app.
 
 ```javascript
-import { asyncWIthFbProvider } from 'ffc-react-client-sdk';
+import { asyncWithFbProvider } from 'featbit-react-client-sdk';
 
 (async () => {
   const config = {
@@ -67,11 +59,11 @@ import { asyncWIthFbProvider } from 'ffc-react-client-sdk';
     }
   }
 
-  const FfcProvider = const FfcProvider = await asyncWIthFbProvider(config);
+  const FbProvider = await asyncWithFbProvider(config);
   render(
-    <FfcProvider>
+    <FbProvider>
       <YourApp />
-    </FfcProvider>,
+    </FbProvider>,
     document.getElementById('reactDiv'),
   );
 })();
@@ -81,17 +73,17 @@ import { asyncWIthFbProvider } from 'ffc-react-client-sdk';
 After initialization is complete, your flags and the client become available at the start of your React app lifecycle. This ensures your app does not flicker due to flag changes at startup time.
 
 > Rendering may be delayed  
-Because the asyncWIthFbProvider function is asynchronous, the rendering of your React app is delayed until initialization is completed. This can take up to 100 milliseconds, but often completes sooner. Alternatively, you can use the withFbProvider function if you prefer to render your app first and then process flag updates after rendering is complete.
+Because the asyncWithFbProvider function is asynchronous, the rendering of your React app is delayed until initialization is completed. This can take up to 100 milliseconds, but often completes sooner. Alternatively, you can use the withFbProvider function if you prefer to render your app first and then process flag updates after rendering is complete.
 
 > This function requires React 16.8.0 or later  
-The asyncWIthFbProvider function uses the Hooks API, which requires React version 16.8.0 or later.
+The asyncWithFbProvider function uses the Hooks API, which requires React version 16.8.0 or later.
 
 #### Initializing using withFbProvider
 
 The **withFbProvider** function initializes the React SDK and wraps your root component in a **Context.Provider**. It accepts a **ProviderConfig** object used to configure the React SDK.
 
 ```javascript
-import { withFbProvider } from 'ffc-react-client-sdk';
+import { withFbProvider } from 'featbit-react-client-sdk';
 
 const config = {
   options: {
@@ -122,7 +114,7 @@ There are two ways to consume the flags.
 
 ##### Using contextType property
 ```javascript
-import { context } from 'ffc-react-client-sdk';
+import { context } from 'featbit-react-client-sdk';
 
 class MyComponent extends React.Component {
   static contextType = context;
@@ -145,10 +137,10 @@ export default MyComponent;
 
 #####  Using withFbConsumer
 
-The return value of withFbConsumer is a wrapper function that takes your component and returns a React component injected with flags & ffcClient as props.
+The return value of withFbConsumer is a wrapper function that takes your component and returns a React component injected with flags & fbClient as props.
 
 ```javascript
-import { withFbConsumer } from 'ffc-react-client-sdk';
+import { withFbConsumer } from 'featbit-react-client-sdk';
 
 class MyComponent extends React.Component {
     render() {
@@ -169,14 +161,14 @@ class MyComponent extends React.Component {
 There are two ways to consume the flags.
 
 ##### Using withFbConsumer
-The return value of withFbConsumer is a wrapper function that takes your component and returns a React component injected with flags & ffcClient as props.
+The return value of withFbConsumer is a wrapper function that takes your component and returns a React component injected with flags & fbClient as props.
 
 ```javascript
-import { withFbConsumer } from 'ffc-react-client-sdk';
+import { withFbConsumer } from 'featbit-react-client-sdk';
 
-const Home = ({ flags, ffcClient /*, ...otherProps */ }) => {
+const Home = ({ flags, fbClient /*, ...otherProps */ }) => {
   // You can call any of the methods from the JavaScript SDK
-  // ffcClient.identify({...})
+  // fbClient.identify({...})
 
   return flags['dev-test-flag'] ? <div>Flag on</div> : <div>Flag off</div>;
 };
@@ -187,22 +179,22 @@ export default withFbConsumer()(Home);
 ##### Using Hooks
 The React SDK offers two custom hooks which you can use as an alternative to **withFbConsumer**: 
 - useFlags
-- useFfcClient.
+- useFbClient.
 
 > These functions require React 16.8.0 or later  
-useFlags and useFfcClient use the Hooks API, which requires React version 16.8.0 or later.
+useFlags and useFbClient use the Hooks API, which requires React version 16.8.0 or later.
 
-useFlags is a custom hook which returns all feature flags. It uses the useContext primitive to access the feature-flags.co context set up by asyncWIthFbProvider or withFbProvider. You still must use the asyncWIthFbProvider or the withFbProvider higher-order component at the root of your application to initialize the React SDK and populate the context with FfcClient and your flags.
+useFlags is a custom hook which returns all feature flags. It uses the useContext primitive to access the feature-flags.co context set up by asyncWithFbProvider or withFbProvider. You still must use the asyncWithFbProvider or the withFbProvider higher-order component at the root of your application to initialize the React SDK and populate the context with FbClient and your flags.
 
-useFfcClient is the second custom hook which returns the underlying feature-flags.co's JavaScript SDK client object. Like the useFlags custom hook, useFfcClient also uses the useContext primitive to access the context set up by asyncWIthFbProvider or withFbProvider. You still must use the asyncWIthFbProvider or the withFbProvider higher-order component to initialize the React SDK to use this custom hook.
+useFbClient is the second custom hook which returns the underlying feature-flags.co's JavaScript SDK client object. Like the useFlags custom hook, useFbClient also uses the useContext primitive to access the context set up by asyncWithFbProvider or withFbProvider. You still must use the asyncWithFbProvider or the withFbProvider higher-order component to initialize the React SDK to use this custom hook.
 
 Here is an example of how to use those two hooks:
 
 ```javascript
-import { useFlags, useFfcClient } from 'ffc-react-client-sdk';
+import { useFlags, useFbClient } from 'featbit-react-client-sdk';
 
 const MyComponent = props => {
-    const ffcClient = useFfcClient();
+    const fbClient = useFbClient();
 
     const { flag1, flag2 } = useFlags();
     // or use
@@ -223,19 +215,19 @@ export default MyComponent;
 ```
 
 ### Configuring the React SDK
-The **ProviderConfig** object provides configuration to both **withFbProvider** and **asyncWIthFbProvider** function.
+The **ProviderConfig** object provides configuration to both **withFbProvider** and **asyncWithFbProvider** function.
 
-The only mandatory property is the **options**, it is the config needed to initialize the ffc-js-client-side-sdk. To know more details about the **options**, please refer to [Initializing ffc-js-client-side-sdk](https://github.com/feature-flags-co/ffc-js-client-side-sdk#initializing-the-sdk). All other properties are React SDK related.
+The only mandatory property is the **options**, it is the config needed to initialize the featbit-js-client-sdk. To know more details about the **options**, please refer to [featbit-js-client-sdk](https://github.com/featbit/featbit-js-client-sdk). All other properties are React SDK related.
 
 The complete liste of the available properties:
 
-- **options**: the initialization config for ffc-js-client-side-sdk. **mandatory**
+- **options**: the initialization config for featbit-js-client-sdk. **mandatory**
 
-    You can use the **options.bootstrap** option to populate the SDK with default values. For more details, go to [ref](https://github.com/feature-flags-co/ffc-js-client-side-sdk#initializing-the-sdk)
+    You can use the **options.bootstrap** option to populate the SDK with default values.
 - **reactOptions**: You can use this option to enable automatic camel casing of flag keys when using the React SDK. the default value is false  **not mandatory**
-- **deferInitialization**: This property allows SDK initialization to be deferred until you define the ffcClient property. the default value is false **not mandatory**
+- **deferInitialization**: This property allows SDK initialization to be deferred until you define the fbClient property. the default value is false **not mandatory**
   
-    asyncWIthFbProvider does not support deferInitialization. You must initialize asyncWIthFbProvider at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of your app.
+    asyncWithFbProvider does not support deferInitialization. You must initialize asyncWithFbProvider at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of your app.
 
     By deferring SDK initialization, you defer all steps which take place as part of SDK initialization, including reading flag values from local storage and sending the SDK's ready event.
 
@@ -275,13 +267,12 @@ Be aware, by activating useCamelCaseFlagKeys, you would see following problems:
 
 - It is possible to induce a key collision if there are multiple flag keys which resolve to the same camel-case key. For example, dev-flag-test and dev.flag.test are unique keys, but the React SDK changes them to the same camel-case key.
 - If a flag key contains three or more capital letters in a row, the SDK automatically converts all letters between the first and last capital letter to lower case. For example, the SDK converts a flag with the key devQAFlagTest to devQaFlagTest. If you use devQAFlagTest with the useFlags() hook, the SDK does not find the flag.
-- Our code [references tool](https://github.com/feature-flags-co/ffc-code-refs-core) expects your source code to reference the exact key, not a camel-case equivalent. The tool does not detect keys that were automatically changed to camel-case.
 - Because the camel-case functionality is implemented in the React SDK instead of in the underlying JavaScript SDK, the underlying client object and functionality provided by the JavaScript SDK reflect flag keys in their original format. Only React-specific contexts such as your injected props use camel case.
 
 ## Importing types
 
-In addition to its own bundled types, the React SDK uses types from ffc-js-client-side-sdk. If you use Typescript and you need to use ffc-js-client-side-sdk types, you can install the ffc-js-client-side-sdk package as a dev dependency. You can then import the types you want directly from ffc-js-client-side-sdk.
+In addition to its own bundled types, the React SDK uses types from featbit-js-client-sdk. If you use Typescript and you need to use featbit-js-client-sdk types, you can install the featbit-js-client-sdk package as a dev dependency. You can then import the types you want directly from featbit-js-client-sdk.
 
-If you use eslint, the SDK requires that you add ffc-js-client-side-sdk as a dev dependency. Otherwise, eslint will report a no-extraneous-dependencies error.
+If you use eslint, the SDK requires that you add featbit-js-client-sdk as a dev dependency. Otherwise, eslint will report a no-extraneous-dependencies error.
 
 

@@ -1,4 +1,4 @@
-import asyncWIthFbProvider from './asyncWIthFbProvider';
+import asyncWithFbProvider from './asyncWithFbProvider';
 import context from './context';
 import FbProvider from './provider';
 import useFlags from './useFlags';
@@ -9,4 +9,4 @@ import withFbProvider from './withFbProvider';
 
 export * from './types';
 
-export { FbProvider, context, asyncWIthFbProvider, camelCaseKeys, useFlags, useFbClient, withFbProvider, withFbConsumer };
+export { FbProvider, context, asyncWithFbProvider, camelCaseKeys, useFlags, useFbClient, withFbProvider, withFbConsumer };

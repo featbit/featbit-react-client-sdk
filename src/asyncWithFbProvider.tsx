@@ -9,17 +9,17 @@ import { fbClient, IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-client
  * This is an async function which initializes feature-flags.co's JS SDK (`featbit-js-client-sdk`)
  * and awaits it so all flags and the fbClient are ready before the consumer app is rendered.
  *
- * The difference between `withFbProvider` and `asyncWIthFbProvider` is that `withFbProvider` initializes
+ * The difference between `withFbProvider` and `asyncWithFbProvider` is that `withFbProvider` initializes
  * `featbit-js-client-sdk` at componentDidMount. This means your flags and the fbClient are only available after
  * your app has mounted. This can result in a flicker due to flag changes at startup time.
  *
- * `asyncWIthFbProvider` initializes `featbit-js-client-sdk` at the entry point of your app prior to render.
+ * `asyncWithFbProvider` initializes `featbit-js-client-sdk` at the entry point of your app prior to render.
  * This means that your flags and the fbClient are ready at the beginning of your app. This ensures your app does not
  * flicker due to flag changes at startup time.
  *
- * `asyncWIthFbProvider` accepts a config object which is used to initialize `featbit-js-client-sdk`.
+ * `asyncWithFbProvider` accepts a config object which is used to initialize `featbit-js-client-sdk`.
  *
- * `asyncWIthFbProvider` does not support the `deferInitialization` config option because `asyncWIthFbProvider` needs
+ * `asyncWithFbProvider` does not support the `deferInitialization` config option because `asyncWithFbProvider` needs
  * to be initialized at the entry point prior to render to ensure your flags and the fbClient are ready at the beginning
  * of your app.
  *
@@ -29,7 +29,7 @@ import { fbClient, IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-client
  *
  * @param config - The configuration used to initialize feature-flags.co's JS SDK
  */
-export default async function asyncWIthFbProvider(config: ProviderConfig): Promise<FunctionComponent> {
+export default async function asyncWithFbProvider(config: ProviderConfig): Promise<FunctionComponent> {
   const { options, reactOptions: userReactOptions } = config;
   const reactOptions = { ...defaultReactOptions, ...userReactOptions };
   await initClient(reactOptions, options);

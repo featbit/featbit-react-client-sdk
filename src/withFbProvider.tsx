@@ -12,11 +12,11 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
  * - It saves all flags and the fbClient instance in the context API
  * - It subscribes to flag changes and propagate them through the context API
  *
- * The difference between `withFbProvider` and `asyncWIthFbProvider` is that `withFbProvider` initializes
+ * The difference between `withFbProvider` and `asyncWithFbProvider` is that `withFbProvider` initializes
  * `featbit-js-client-sdk` at `componentDidMount`. This means your flags and the fbClient are only available after
  * your app has mounted. This can result in a flicker due to flag changes at startup time.
  *
- * `asyncWIthFbProvider` initializes `featbit-js-client-sdk` at the entry point of your app prior to render.
+ * `asyncWithFbProvider` initializes `featbit-js-client-sdk` at the entry point of your app prior to render.
  * This means that your flags and the fbClient are ready at the beginning of your app. This ensures your app does not
  * flicker due to flag changes at startup time.
  *
