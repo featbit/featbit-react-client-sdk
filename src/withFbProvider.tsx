@@ -28,14 +28,14 @@ export function withFbProvider<T extends IntrinsicAttributes = {}>(
   config: ProviderConfig,
 ): (WrappedComponent: React.ComponentType<T>) => React.ComponentType<T> {
   return function withFbProviderHoc(WrappedComponent: React.ComponentType<T>): React.ComponentType<T> {
-    const { reactOptions: userReactOptions } = config;
-    const reactOptions = { ...defaultReactOptions, ...userReactOptions };
-    const providerProps = { ...config, reactOptions };
+    const {reactOptions: userReactOptions} = config;
+    const reactOptions = {...defaultReactOptions, ...userReactOptions};
+    const providerProps = {...config, reactOptions};
 
     function HoistedComponent(props: T) {
       return (
-        <FbProvider {...providerProps}>
-          <WrappedComponent {...props} />
+        <FbProvider { ...providerProps }>
+          <WrappedComponent { ...props } />
         </FbProvider>
       );
     }

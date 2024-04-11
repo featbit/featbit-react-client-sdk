@@ -30,28 +30,28 @@ import { fbClient, IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-client
  * @param config - The configuration used to initialize FeatBit's JS SDK
  */
 export default async function asyncWithFbProvider(config: ProviderConfig) {
-  const { options, reactOptions: userReactOptions } = config;
-  const reactOptions = { ...defaultReactOptions, ...userReactOptions };
+  const {options, reactOptions: userReactOptions} = config;
+  const reactOptions = {...defaultReactOptions, ...userReactOptions};
   await initClient(reactOptions, options);
 
-  const FbProvider = ({ children }: { children: ReactNode }) => {
+  const FbProvider = ({children}: { children: ReactNode }) => {
     const [state, setState] = useState({
       flags: new Proxy(fetchFlags(fbClient, reactOptions), {
-                get(target, prop, receiver) {
-                  const ret = Reflect.get(target, prop, receiver);
-                  fbClient.sendFeatureFlagInsight(prop as string, ret);
-                  return ret;
-                }
-              }),
+        get(target, prop, receiver) {
+          const ret = Reflect.get(target, prop, receiver);
+          fbClient.sendFeatureFlagInsight(prop as string, ret);
+          return ret;
+        }
+      }),
       fbClient,
     });
 
     useEffect(() => {
       if (options) {
-        const { bootstrap } = options;
+        const {bootstrap} = options;
         if (bootstrap && bootstrap.length > 0) {
           const bootstrappedFlags = reactOptions.useCamelCaseFlagKeys ? camelCaseKeys(bootstrap) : bootstrap;
-          setState(prev => ({ ...prev, flags: bootstrappedFlags }));
+          setState(prev => ({...prev, flags: bootstrappedFlags}));
         }
       }
 
@@ -63,13 +63,13 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
               acc[curr] = flattened[curr];
               return acc;
             }, prev.flags);
-  
+
             return {
               flags: new Proxy(flags, {
                 get(target, prop, receiver) {
-                    const ret = Reflect.get(target, prop, receiver);
+                  const ret = Reflect.get(target, prop, receiver);
                   fbClient.sendFeatureFlagInsight(prop as string, ret);
-                    return ret;
+                  return ret;
                 }
               }),
               fbClient
@@ -79,7 +79,7 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
       });
     }, []);
 
-    return <Provider value={ state }>{children}</Provider>;
+    return <Provider value={ state }>{ children }</Provider>;
   };
 
   return FbProvider;

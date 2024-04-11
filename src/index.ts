@@ -9,4 +9,13 @@ import withFbProvider from './withFbProvider';
 
 export * from './types';
 
-export { FbProvider, context, asyncWithFbProvider, camelCaseKeys, useFlags, useFbClient, withFbProvider, withFbConsumer };
+export {
+  FbProvider,
+  context,
+  asyncWithFbProvider,
+  camelCaseKeys,
+  useFlags,
+  useFbClient,
+  withFbProvider,
+  withFbConsumer
+};

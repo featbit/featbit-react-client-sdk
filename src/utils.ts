@@ -9,19 +9,19 @@ import { defaultReactOptions, FbReactOptions } from './types';
  * @param rawFlags A mapping of flag keys and their values
  * @return A transformed `IFeatureFlagSet` with camelCased flag keys
  */
- export const camelCaseKeys = (rawFlags: IFeatureFlagSet) => {
-    const flags: IFeatureFlagSet = {};
-    for (const rawFlag in rawFlags) {
-      // Exclude system keys
-      if (rawFlag.indexOf('$') !== 0) {
-        flags[camelCase(rawFlag)] = rawFlags[rawFlag]; // tslint:disable-line:no-unsafe-any
-      }
+export const camelCaseKeys = (rawFlags: IFeatureFlagSet) => {
+  const flags: IFeatureFlagSet = {};
+  for (const rawFlag in rawFlags) {
+    // Exclude system keys
+    if (rawFlag.indexOf('$') !== 0) {
+      flags[camelCase(rawFlag)] = rawFlags[rawFlag]; // tslint:disable-line:no-unsafe-any
     }
-  
-    return flags;
-  };
+  }
 
-  /**
+  return flags;
+};
+
+/**
  * Gets the flags to pass to the provider from the changeset.
  *
  * @param changes the `LDFlagChangeset` from the ldClient onchange handler.
@@ -30,20 +30,20 @@ import { defaultReactOptions, FbReactOptions } from './types';
  * object may be empty `{}` if none of the targetFlags were changed.
  */
 export const getFlattenedFlagsFromChangeset = (
-    changes: IFeatureFlagChange[],
-    reactOptions: FbReactOptions,
-  ): IFeatureFlagSet => {
-    const flattened: IFeatureFlagSet = {};
-    changes.forEach((c: IFeatureFlagChange) => {
-      // tslint:disable-next-line:no-unsafe-any
-      const flagKey = reactOptions.useCamelCaseFlagKeys ? camelCase(c.id) : c.id;
-      flattened[flagKey] = c.newValue;
-    })
-  
-    return flattened;
-  };
+  changes: IFeatureFlagChange[],
+  reactOptions: FbReactOptions,
+): IFeatureFlagSet => {
+  const flattened: IFeatureFlagSet = {};
+  changes.forEach((c: IFeatureFlagChange) => {
+    // tslint:disable-next-line:no-unsafe-any
+    const flagKey = reactOptions.useCamelCaseFlagKeys ? camelCase(c.id) : c.id;
+    flattened[flagKey] = c.newValue;
+  })
 
-  /**
+  return flattened;
+};
+
+/**
  * Retrieves flag values.
  *
  * @param fbClient FeatBit client
@@ -52,12 +52,12 @@ export const getFlattenedFlagsFromChangeset = (
  * @returns an `IFeatureFlagSet` with the current flag values from FeatBit
  */
 export const fetchFlags = (
-    fbClient: FB,
-    reactOptions: FbReactOptions = defaultReactOptions,
-  ) => {
-    let rawFlags: IFeatureFlagSet = fbClient.getAllFeatureFlags();
-  
-    return reactOptions.useCamelCaseFlagKeys ? camelCaseKeys(rawFlags) : rawFlags;
-  };
-  
-  export default { camelCaseKeys, getFlattenedFlagsFromChangeset, fetchFlags };
+  fbClient: FB,
+  reactOptions: FbReactOptions = defaultReactOptions,
+) => {
+  let rawFlags: IFeatureFlagSet = fbClient.getAllFeatureFlags();
+
+  return reactOptions.useCamelCaseFlagKeys ? camelCaseKeys(rawFlags) : rawFlags;
+};
+
+export default {camelCaseKeys, getFlattenedFlagsFromChangeset, fetchFlags};

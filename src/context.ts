@@ -6,7 +6,7 @@ interface FbContext {
   fbClient: FB
 }
 
-const context = createContext<FbContext>({ flags: {}, fbClient: fbClient});
+const context = createContext<FbContext>({flags: {}, fbClient: fbClient});
 
 const {
   Provider,

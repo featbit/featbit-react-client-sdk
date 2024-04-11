@@ -12,16 +12,16 @@ import { FbContext } from "./context";
  * @see `ProviderConfig` for more details about the parameters
  * @return An initialized client and flags
  */
- export const initClient = async (
-    reactOptions: FbReactOptions = defaultReactOptions,
-    options: IOption = { secret: '', anonymous: true }
-  ): Promise<FbContext> => {
-    return new Promise<FbContext>(resolve => {
-      fbClient.on('ready', () => {
-        const flags = fetchFlags(fbClient, reactOptions);
-        resolve({ flags, fbClient });
-      });
-      
-      fbClient.init({...options});
+export const initClient = async (
+  reactOptions: FbReactOptions = defaultReactOptions,
+  options: IOption = {secret: '', anonymous: true}
+): Promise<FbContext> => {
+  return new Promise<FbContext>(resolve => {
+    fbClient.on('ready', () => {
+      const flags = fetchFlags(fbClient, reactOptions);
+      resolve({flags, fbClient});
     });
-  };
+
+    fbClient.init({...options});
+  });
+};

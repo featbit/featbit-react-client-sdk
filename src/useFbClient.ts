@@ -13,7 +13,7 @@ import { FB } from "featbit-js-client-sdk";
  */
 // tslint:enable:max-line-length
 const useFbClient = (): FB => {
-  const { fbClient } = useContext<FbContext>(context);
+  const {fbClient} = useContext<FbContext>(context);
 
   return fbClient;
 };

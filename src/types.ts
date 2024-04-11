@@ -4,63 +4,65 @@ import { FB, IFeatureFlagSet, IOption } from 'featbit-js-client-sdk';
  * Initialization options for the FeatBit React SDK. These are in addition to the options exposed
  * by [[IOption]] which are common to both the JavaScript and React SDKs.
  */
- export interface FbReactOptions {
-    /**
-     * Whether the React SDK should transform flag keys into camel-cased format.
-     * Using camel-cased flag keys allow for easier use as prop values, however,
-     * these keys won't directly match the flag keys as known to LaunchDarkly.
-     * Consequently, flag key collisions may be possible and the Code References feature
-     * will not function properly.
-     *
-     * This is false by default, meaning that keys will automatically be converted to camel-case.
-     */
-    useCamelCaseFlagKeys?: boolean;
-  }
-  
+export interface FbReactOptions {
   /**
-   * Contains default values for the `reactOptions` object.
+   * Whether the React SDK should transform flag keys into camel-cased format.
+   * Using camel-cased flag keys allow for easier use as prop values, however,
+   * these keys won't directly match the flag keys as known to LaunchDarkly.
+   * Consequently, flag key collisions may be possible and the Code References feature
+   * will not function properly.
+   *
+   * This is false by default, meaning that keys will automatically be converted to camel-case.
    */
-  export const defaultReactOptions = { useCamelCaseFlagKeys: false };
-  
+  useCamelCaseFlagKeys?: boolean;
+}
+
+/**
+ * Contains default values for the `reactOptions` object.
+ */
+export const defaultReactOptions = {useCamelCaseFlagKeys: false};
+
+/**
+ * Configuration object used to initialise FeatBit's JS client.
+ */
+export interface ProviderConfig {
   /**
-   * Configuration object used to initialise FeatBit's JS client.
+   * If set to true, the FeatBit will not be initialized until the option prop has been defined.
    */
-  export interface ProviderConfig {  
-    /**
-     * If set to true, the FeatBit will not be initialized until the option prop has been defined.
-     */
-    deferInitialization?: boolean;
-  
-    /**
-     * FeatBit initialization options. These options are common between FeatBit's JavaScript and React SDKs.
-     */
-    options?: IOption;
-  
-    /**
-     * Additional initialization options specific to the React SDK.
-     *
-     * @see options
-     */
-    reactOptions?: FbReactOptions;
-  
-    /**
-     * Optionally, the FB can be initialised outside of the provider
-     * and passed in, instead of being initialised by the provider.
-     * Note: it should only be passed in when it has emitted the 'ready'
-     * event, to ensure that the flags are properly set.
-     */
-    fbClient?: FB;
-  }
+  deferInitialization?: boolean;
 
   /**
+   * FeatBit initialization options. These options are common between FeatBit's JavaScript and React SDKs.
+   */
+  options?: IOption;
+
+  /**
+   * Additional initialization options specific to the React SDK.
+   *
+   * @see options
+   */
+  reactOptions?: FbReactOptions;
+
+  /**
+   * Optionally, the FB can be initialised outside of the provider
+   * and passed in, instead of being initialised by the provider.
+   * Note: it should only be passed in when it has emitted the 'ready'
+   * event, to ensure that the flags are properly set.
+   */
+  fbClient?: FB;
+}
+
+/**
  * The return type of withFbProvider HOC. Exported for testing purposes only.
  *
  * @ignore
  */
 export interface EnhancedComponent extends React.Component {
   subscribeToChanges(fbClient: FB): void;
+
   // tslint:disable-next-line:invalid-void
   componentDidMount(): Promise<void>;
+
   // tslint:disable-next-line:invalid-void
   componentDidUpdate(prevProps: ProviderConfig): Promise<void>;
 }

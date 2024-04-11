@@ -38,17 +38,17 @@ export interface FbProps {
  * to only pass the fbClient prop to your component. Defaults to `{ clientOnly: false }`.
  * @return A HOC with flags and the `fbClient` instance injected via props
  */
-function withFbConsumer(options: ConsumerOptions = { clientOnly: false }) {
+function withFbConsumer(options: ConsumerOptions = {clientOnly: false}) {
   return function withFbConsumerHoc<P>(WrappedComponent: React.ComponentType<P & FbProps>) {
     return (props: P) => (
       <Consumer>
-        {({ flags, fbClient }: FbContext) => {
+        { ({flags, fbClient}: FbContext) => {
           if (options.clientOnly) {
-            return <WrappedComponent fbClient={fbClient} {...props} />;
+            return <WrappedComponent fbClient={ fbClient } { ...props } />;
           }
 
-          return <WrappedComponent flags={flags} fbClient={fbClient} {...props} />;
-        }}
+          return <WrappedComponent flags={ flags } fbClient={ fbClient } { ...props } />;
+        } }
       </Consumer>
     );
   };

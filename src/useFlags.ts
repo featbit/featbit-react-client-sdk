@@ -11,7 +11,7 @@ import { IFeatureFlagSet } from "featbit-js-client-sdk";
  * @return All the feature flags configured in FeatBit
  */
 const useFlags = <T extends IFeatureFlagSet = IFeatureFlagSet>(): T => {
-  const { flags } = useContext<FbContext>(context);
+  const {flags} = useContext<FbContext>(context);
 
   return flags as T;
 };
