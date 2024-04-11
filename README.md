@@ -106,9 +106,9 @@ export default withFbProvider(config)(YourApp);
 
 The React SDK automatically subscribes to flag change events. This is different from the JavaScript SDK, where customers need to opt in to event listening.
 
-### Consuming the flags
+### Consuming flags
 
-#### Class component
+#### Consuming flags in class component
 
 There are two ways to consume the flags.
 
@@ -157,7 +157,7 @@ class MyComponent extends React.Component {
   export default withFbConsumer()(Board)
 ```
 
-#### Function component
+#### Consuming flags in function component
 There are two ways to consume the flags.
 
 ##### Using withFbConsumer
