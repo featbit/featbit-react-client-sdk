@@ -184,9 +184,9 @@ The React SDK offers two custom hooks which you can use as an alternative to **w
 > These functions require React 16.8.0 or later  
 useFlags and useFbClient use the Hooks API, which requires React version 16.8.0 or later.
 
-useFlags is a custom hook which returns all feature flags. It uses the useContext primitive to access the feature-flags.co context set up by asyncWithFbProvider or withFbProvider. You still must use the asyncWithFbProvider or the withFbProvider higher-order component at the root of your application to initialize the React SDK and populate the context with FbClient and your flags.
+useFlags is a custom hook which returns all feature flags. It uses the useContext primitive to access the FeatBit context set up by asyncWithFbProvider or withFbProvider. You still must use the asyncWithFbProvider or the withFbProvider higher-order component at the root of your application to initialize the React SDK and populate the context with FbClient and your flags.
 
-useFbClient is the second custom hook which returns the underlying feature-flags.co's JavaScript SDK client object. Like the useFlags custom hook, useFbClient also uses the useContext primitive to access the context set up by asyncWithFbProvider or withFbProvider. You still must use the asyncWithFbProvider or the withFbProvider higher-order component to initialize the React SDK to use this custom hook.
+useFbClient is the second custom hook which returns the underlying FeatBit's JavaScript SDK client object. Like the useFlags custom hook, useFbClient also uses the useContext primitive to access the context set up by asyncWithFbProvider or withFbProvider. You still must use the asyncWithFbProvider or the withFbProvider higher-order component to initialize the React SDK to use this custom hook.
 
 Here is an example of how to use those two hooks:
 
@@ -259,7 +259,7 @@ The following is an example ProviderConfig object including each of the above pr
 ```
 
 ## Flag keys
-feature-flags.co primarily identifies feature flags by a key which must contain only alphanumeric characters, dots (.), underscores (_), and dashes (-). These keys are used across all of our APIs as well as in the SDKs to identify flags.
+FeatBit primarily identifies feature flags by a key which must contain only alphanumeric characters, dots (.), underscores (_), and dashes (-). These keys are used across all of our APIs as well as in the SDKs to identify flags.
 
 However, JavaScript and React cannot access keys with a dot notation, so the React SDK can change all flag keys to camel case (you need to activate this with the **reactOptions.useCamelCaseFlagKeys** parameter). A flag with key dev-flag-test is accessible as flags.devFlagTest. This notation **flags['dev-flag-test']** should be used if useCamelCaseFlagKeys is disabled, which is by default.
 

@@ -24,7 +24,7 @@ export interface FbProps {
   flags?: IFeatureFlagSet;
 
   /**
-   * An instance of `FB` from the feature-flags.co JS SDK (`featbit-js-client-sdk`)
+   * An instance of `FB` from the FeatBit JS Client SDK (`featbit-js-client-sdk`)
    */
   fbClient?: FB;
 }

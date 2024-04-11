@@ -116,7 +116,9 @@ import { fbClient, FB, IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-cl
     }
   
     render() {
-      return <Provider value={this.state}>{this.props.children}</Provider>;
+      const { flags, fbClient } = this.state;
+
+      return <Provider value={{ flags, fbClient }}>{this.props.children}</Provider>;
     }
   }
 

@@ -46,10 +46,10 @@ export const getFlattenedFlagsFromChangeset = (
   /**
  * Retrieves flag values.
  *
- * @param fbClient feature-flags.co client
+ * @param fbClient FeatBit client
  * @param reactOptions Initialization options for the React SDK
  *
- * @returns an `IFeatureFlagSet` with the current flag values from feature-flags.co.
+ * @returns an `IFeatureFlagSet` with the current flag values from FeatBit
  */
 export const fetchFlags = (
     fbClient: FB,

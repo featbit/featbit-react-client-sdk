@@ -1,10 +1,5 @@
 import { FB, IFeatureFlagSet, IOption } from 'featbit-js-client-sdk';
 
-export interface FbContext {
-  flags: IFeatureFlagSet;
-  fbClient: FB
-}
-
 /**
  * Initialization options for the FeatBit React SDK. These are in addition to the options exposed
  * by [[IOption]] which are common to both the JavaScript and React SDKs.

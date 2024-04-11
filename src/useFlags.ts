@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import context from './context';
+import context, { FbContext } from './context';
+import { IFeatureFlagSet } from "featbit-js-client-sdk";
 
 /**
  * `useFlags` is a custom hook which returns all feature flags. It uses the `useContext` primitive
@@ -7,12 +8,12 @@ import context from './context';
  * use the `withFbProvider` HOC at the root of your app to initialize the React SDK and populate the
  * context with `fbClient` and your flags.
  *
- * @return All the feature flags configured in your feature-flags.co project
+ * @return All the feature flags configured in FeatBit
  */
-const useFlags = () => {
-  const { flags } = useContext(context);
+const useFlags = <T extends IFeatureFlagSet = IFeatureFlagSet>(): T => {
+  const { flags } = useContext<FbContext>(context);
 
-  return flags;
+  return flags as T;
 };
 
 export default useFlags;

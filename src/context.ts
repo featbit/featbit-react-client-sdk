@@ -1,6 +1,10 @@
-import { fbClient } from 'featbit-js-client-sdk';
+import { FB, fbClient, IFeatureFlagSet } from 'featbit-js-client-sdk';
 import { createContext } from 'react';
-import { FbContext } from './types';
+
+interface FbContext {
+  flags: IFeatureFlagSet;
+  fbClient: FB
+}
 
 const context = createContext<FbContext>({ flags: {}, fbClient: fbClient});
 

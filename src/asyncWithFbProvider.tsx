@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FunctionComponent } from 'react';
+import React, { useState, useEffect, FunctionComponent, ReactNode } from 'react';
 import { ProviderConfig, defaultReactOptions } from './types';
 import { Provider } from './context';
 import { initClient } from './initClient';
@@ -27,20 +27,20 @@ import { fbClient, IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-client
  * - saves all flags and the ldClient instance in the context API
  * - subscribes to flag changes and propagate them through the context API
  *
- * @param config - The configuration used to initialize feature-flags.co's JS SDK
+ * @param config - The configuration used to initialize FeatBit's JS SDK
  */
-export default async function asyncWithFbProvider(config: ProviderConfig): Promise<FunctionComponent> {
+export default async function asyncWithFbProvider(config: ProviderConfig) {
   const { options, reactOptions: userReactOptions } = config;
   const reactOptions = { ...defaultReactOptions, ...userReactOptions };
   await initClient(reactOptions, options);
 
-  const FbProvider: FunctionComponent = ({ children }) => {
+  const FbProvider = ({ children }: { children: ReactNode }) => {
     const [state, setState] = useState({
       flags: new Proxy(fetchFlags(fbClient, reactOptions), {
                 get(target, prop, receiver) {
-                    const ret = Reflect.get(target, prop, receiver);
+                  const ret = Reflect.get(target, prop, receiver);
                   fbClient.sendFeatureFlagInsight(prop as string, ret);
-                    return ret;
+                  return ret;
                 }
               }),
       fbClient,
@@ -79,7 +79,7 @@ export default async function asyncWithFbProvider(config: ProviderConfig): Promi
       });
     }, []);
 
-    return <Provider value={state}>{children}</Provider>;
+    return <Provider value={ state }>{children}</Provider>;
   };
 
   return FbProvider;

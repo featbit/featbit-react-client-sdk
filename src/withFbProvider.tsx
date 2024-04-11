@@ -2,6 +2,7 @@ import * as React from 'react';
 import { defaultReactOptions, ProviderConfig } from './types';
 import FbProvider from './provider';
 import hoistNonReactStatics from 'hoist-non-react-statics';
+import IntrinsicAttributes = React.JSX.IntrinsicAttributes;
 
 /**
  * `withFbProvider` is a function which accepts a config object which is used to
@@ -20,10 +21,10 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
  * This means that your flags and the fbClient are ready at the beginning of your app. This ensures your app does not
  * flicker due to flag changes at startup time.
  *
- * @param config - The configuration used to initialize feature-flags.co JS SDK
+ * @param config - The configuration used to initialize FeatBit JS Client SDK
  * @return A function which accepts your root React component and returns a HOC
  */
-export function withFbProvider<T = {}>(
+export function withFbProvider<T extends IntrinsicAttributes = {}>(
   config: ProviderConfig,
 ): (WrappedComponent: React.ComponentType<T>) => React.ComponentType<T> {
   return function withFbProviderHoc(WrappedComponent: React.ComponentType<T>): React.ComponentType<T> {
@@ -31,14 +32,12 @@ export function withFbProvider<T = {}>(
     const reactOptions = { ...defaultReactOptions, ...userReactOptions };
     const providerProps = { ...config, reactOptions };
 
-    class HoistedComponent extends React.Component<T> {
-      render() {
-        return (
-          <FbProvider {...providerProps}>
-            <WrappedComponent {...this.props} />
-          </FbProvider>
-        );
-      }
+    function HoistedComponent(props: T) {
+      return (
+        <FbProvider {...providerProps}>
+          <WrappedComponent {...props} />
+        </FbProvider>
+      );
     }
 
     hoistNonReactStatics(HoistedComponent, WrappedComponent);
