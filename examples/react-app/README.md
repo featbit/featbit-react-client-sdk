@@ -91,6 +91,7 @@ then update the two variables in the [config.js](./src/board.js) file with the f
 
 ```javascript
 const secret = 'use your environment secret';
+const streamingUrl = 'use your environment streaming url';
 const enableDataSync = true;
 ```
 

@@ -1,12 +1,14 @@
-## Introduction
-This is the react client side SDK for the feature management platform [FeatBit](https://www.featbit.co). We will document all the methods available in this SDK, and detail how they work.
+# Featbit Client-Side SDK for ReactJS
 
-> Be aware, this is a client side SDK, it is intended for use in a single-user context, which can be mobile, desktop or embeded applications. This SDK can only be ran in a browser environment, it is not suitable for React Native projects, React Native SDK will be available in our other repo.
+## Introduction
+This is the react client side SDK for the feature management platform [FeatBit](https://www.featbit.co).
+
+Be aware, this is a client side SDK, it is intended for use in a single-user context, which can be mobile, desktop or embeded applications. This SDK can only be ran in a browser environment, it is not suitable for React Native projects, React Native SDK will be available in our other repo.
 
 The React SDK is based on the JavaScript SDK  
 The React SDK builds on FeatBit's JavaScript SDK to provide a better integration for use in React applications. As a result, much of the JavaScript SDK functionality is also available for the React SDK to use. 
 
-The **fbClient** in the current doc is the same object as **fbClient** in the featbit-js-client-sdk.
+The **fbClient** in the current doc is the same object as **fbClient** in the featbit-js-client-sdk SDK.
 To learn more about our JavaScript client SDK, please go to this repository [featbit-js-client-sdk](https://github.com/featbit/featbit-js-client-sdk)
 
 > SDK version compatibility  
@@ -20,10 +22,74 @@ npm
 npm install featbit-react-client-sdk
 ```
 
-yarn
+### Prerequisite
+
+Before using the SDK, you need to obtain the environment secret and SDK URLs.
+
+Follow the documentation below to retrieve these values
+
+- [How to get the environment secret](https://docs.featbit.co/sdk/faq#how-to-get-the-environment-secret)
+- [How to get the SDK URLs](https://docs.featbit.co/sdk/faq#how-to-get-the-sdk-urls)
+
+### Quick Start
+
+The following code demonstrates:
+1. Initialize the SDK with anonymous user
+2. Evaluate flag with userFlags hook
+
+```javascript
+import { createRoot } from 'react-dom/client';
+import { asyncWithFbProvider, useFlags, FbProvider } from 'featbit-react-client-sdk';
+
+function Game() {
+  return (
+    <div>
+      This is a game
+    </div>
+  );
+}
+
+function APP() {
+  const { flags } = useFlags();
+
+  const gameEnabled = flags['game-enabled'];
+
+  return (
+    <div>
+      <div>{ gameEnabled ? <Game /> : <div>The game is not enabled</div>}</div>
+    </div>
+  );
+}
+
+(async () => {
+  const configWithAnonymousUser = {
+    options: {
+      anonymous: true,
+      secret: 'YOUR ENVIRONMENT SECRET',
+      api: 'THE STREAMING URL'
+    }
+  };
+  
+  const root = createRoot(document.getElementById('root'));
+  const FbProvider = await asyncWithFbProvider(configWithAnonymousUser);
+  root.render(
+    <FbProvider>
+      <Game />,
+    </FbProvider>
+  );
+  
+  // Use the following code in React < 18.0.0
+  // ReactDOM.render(
+  //   <FbProvider>
+  //     <APP/>
+  //   </FbProvider>,
+  //   document.getElementById('root')
+  // );
+})();
+
+
 ```
-yarn add featbit-react-client-sdk
-```
+## SDK
 
 ### Initializing the SDK
 After you install the dependency, initialize the React SDK. You can do this in one of two ways:
@@ -59,12 +125,12 @@ import { asyncWithFbProvider } from 'featbit-react-client-sdk';
     }
   }
 
+  const root = createRoot(document.getElementById('root'));
   const FbProvider = await asyncWithFbProvider(config);
-  render(
+  root.render(
     <FbProvider>
-      <YourApp />
-    </FbProvider>,
-    document.getElementById('reactDiv'),
+      <YourApp />,
+    </FbProvider>
   );
 })();
 
