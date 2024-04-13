@@ -1,12 +1,19 @@
-import { FB, fbClient, IFeatureFlagSet } from 'featbit-js-client-sdk';
+import { FB, IFeatureFlagSet } from 'featbit-js-client-sdk';
 import { createContext } from 'react';
+import { FlagKeyMap } from "./types";
 
 interface FbContext {
   flags: IFeatureFlagSet;
-  fbClient: FB
+
+  /**
+   * Map of camelized flag keys to their original unmodified form. Empty if useCamelCaseFlagKeys option is false.
+   */
+  flagKeyMap: FlagKeyMap;
+
+  fbClient?: FB
 }
 
-const context = createContext<FbContext>({flags: {}, fbClient: fbClient});
+const context = createContext<FbContext>({flags: {}, flagKeyMap: {}, fbClient: undefined});
 
 const {
   Provider,

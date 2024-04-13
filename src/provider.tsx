@@ -1,9 +1,14 @@
 import React from "react";
 import { EnhancedComponent, ProviderConfig, defaultReactOptions } from './types';
-import { Provider, FbContext as HocState } from './context';
+import { Provider, FbContext } from './context';
 import { camelCaseKeys, fetchFlags, getFlattenedFlagsFromChangeset } from "./utils";
 import { initClient } from './initClient';
-import { fbClient, FB, IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-client-sdk';
+import { FB, IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-client-sdk';
+import getFlagsProxy from "./getFlagsProxy";
+
+interface FbHocState extends FbContext {
+  unproxiedFlags: IFeatureFlagSet;
+}
 
 /**
  * The `FbProvider` is a component which accepts a config object which is used to
@@ -22,29 +27,35 @@ import { fbClient, FB, IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-cl
  * within your application. This provider is used inside the `withFbProviderHOC` and can be used instead to initialize
  * the `featbit-js-client-sdk`. For async initialization, check out the `asyncWithFbProvider` function
  */
-class FbProvider extends React.Component<ProviderConfig, HocState> implements EnhancedComponent {
-  readonly state: Readonly<HocState>;
+class FbProvider extends React.Component<ProviderConfig, FbHocState> implements EnhancedComponent {
+  readonly state: Readonly<FbHocState>;
+  bootstrapFlags: IFeatureFlagSet;
 
   constructor(props: ProviderConfig) {
     super(props);
 
     const {options} = props;
+    this.bootstrapFlags = (options?.bootstrap || []).reduce((acc, flag) => {
+      acc[flag.id] = flag.variation;
+      return acc;
+    }, {} as {[key: string]: string});;
 
     this.state = {
       flags: {},
-      fbClient: fbClient,
+      unproxiedFlags: {},
+      flagKeyMap: {},
+      fbClient: undefined,
     };
 
-    if (options) {
-      const {bootstrap} = options;
-      if (bootstrap && bootstrap.length > 0) {
-        const {useCamelCaseFlagKeys} = this.getReactOptions();
-        const flags = useCamelCaseFlagKeys ? camelCaseKeys(bootstrap) : bootstrap;
-        this.state = {
-          flags,
-          fbClient: fbClient,
-        };
-      }
+    if (options?.bootstrap && options?.bootstrap.length > 0) {
+      const {useCamelCaseFlagKeys} = this.getReactOptions();
+      const flags = useCamelCaseFlagKeys ? camelCaseKeys(this.bootstrapFlags) : this.bootstrapFlags;
+      this.state = {
+        flags,
+        unproxiedFlags: flags,
+        flagKeyMap: {},
+        fbClient: undefined,
+      };
     }
   }
 
@@ -52,21 +63,16 @@ class FbProvider extends React.Component<ProviderConfig, HocState> implements En
 
   subscribeToChanges = (fbClient: FB) => {
     fbClient.on('ff_update', (changes: IFeatureFlagChange[]) => {
-      const flattened: IFeatureFlagSet = getFlattenedFlagsFromChangeset(changes, this.getReactOptions());
-      if (Object.keys(flattened).length > 0) {
-        const flags = Object.keys(flattened).reduce((acc, curr) => {
-          acc[curr] = flattened[curr];
-          return acc;
-        }, this.state.flags);
+      const updates: IFeatureFlagSet = getFlattenedFlagsFromChangeset(changes);
+      const unproxiedFlags = {
+        ...this.state.unproxiedFlags,
+        ...updates,
+      };
 
+      if (Object.keys(updates).length > 0) {
         this.setState({
-          flags: new Proxy(flags, {
-            get(target, prop, receiver) {
-              const ret = Reflect.get(target, prop, receiver);
-              fbClient.sendFeatureFlagInsight(prop as string, ret);
-              return ret;
-            }
-          })
+          unproxiedFlags,
+          ...getFlagsProxy(fbClient, this.bootstrapFlags, unproxiedFlags, this.getReactOptions())
         })
       }
     });
@@ -76,24 +82,18 @@ class FbProvider extends React.Component<ProviderConfig, HocState> implements En
     const {options} = this.props;
     let client: FB = this.props.fbClient!;
     const reactOptions = this.getReactOptions();
-    let fetchedFlags;
+    let unproxiedFlags;
     if (client) {
-      fetchedFlags = fetchFlags(client, reactOptions);
+      unproxiedFlags = fetchFlags(client);
     } else {
-      client = fbClient;
       const initialisedOutput = await initClient(reactOptions, options);
-      fetchedFlags = initialisedOutput.flags;
-      client = initialisedOutput.fbClient;
+      unproxiedFlags = initialisedOutput.flags;
+      client = initialisedOutput.fbClient!;
     }
 
     this.setState({
-      flags: new Proxy(fetchedFlags, {
-        get(target, prop, receiver) {
-          const ret = Reflect.get(target, prop, receiver);
-          client.sendFeatureFlagInsight(prop as string, ret);
-          return ret;
-        }
-      }),
+      unproxiedFlags,
+      ...getFlagsProxy(client, this.bootstrapFlags, unproxiedFlags, reactOptions),
       fbClient: client
     });
 
@@ -118,9 +118,9 @@ class FbProvider extends React.Component<ProviderConfig, HocState> implements En
   }
 
   render() {
-    const {flags, fbClient} = this.state;
+    const {flags, flagKeyMap, fbClient} = this.state;
 
-    return <Provider value={ {flags, fbClient} }>{ this.props.children }</Provider>;
+    return <Provider value={{ flags, flagKeyMap, fbClient }}>{ this.props.children }</Provider>;
   }
 }
 

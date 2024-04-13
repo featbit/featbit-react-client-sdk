@@ -1,7 +1,6 @@
-import { defaultReactOptions, FbReactOptions } from './types';
-import { fbClient, IOption } from 'featbit-js-client-sdk';
+import { AllFlagsFbClient, defaultReactOptions, FbReactOptions } from './types';
+import { FB, IOption } from 'featbit-js-client-sdk';
 import { fetchFlags } from "./utils";
-import { FbContext } from "./context";
 
 /**
  * Internal function to initialize the `featbit-js-client-sdk`.
@@ -15,10 +14,12 @@ import { FbContext } from "./context";
 export const initClient = async (
   reactOptions: FbReactOptions = defaultReactOptions,
   options: IOption = {secret: '', anonymous: true}
-): Promise<FbContext> => {
-  return new Promise<FbContext>(resolve => {
+): Promise<AllFlagsFbClient> => {
+  const fbClient = new FB();
+
+  return new Promise<AllFlagsFbClient>((resolve) => {
     fbClient.on('ready', () => {
-      const flags = fetchFlags(fbClient, reactOptions);
+      const flags = fetchFlags(fbClient);
       resolve({flags, fbClient});
     });
 

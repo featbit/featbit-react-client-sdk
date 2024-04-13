@@ -12,15 +12,22 @@ export interface FbReactOptions {
    * Consequently, flag key collisions may be possible and the Code References feature
    * will not function properly.
    *
-   * This is false by default, meaning that keys will automatically be converted to camel-case.
+   * This is false by default, if set to true, keys will automatically be converted to camel-case.
    */
   useCamelCaseFlagKeys?: boolean;
+
+  /**
+   * Whether to send flag evaluation events when a flag is read from the `flags` object
+   * returned by the `useFlags` hook. This is true by default, meaning flag evaluation
+   * events will be sent by default.
+   */
+  sendEventsOnFlagRead?: boolean;
 }
 
 /**
  * Contains default values for the `reactOptions` object.
  */
-export const defaultReactOptions = {useCamelCaseFlagKeys: false};
+export const defaultReactOptions = {useCamelCaseFlagKeys: false, sendEventsOnFlagRead: true};
 
 /**
  * Configuration object used to initialise FeatBit's JS client.
@@ -44,7 +51,7 @@ export interface ProviderConfig {
   reactOptions?: FbReactOptions;
 
   /**
-   * Optionally, the FB can be initialised outside of the provider
+   * Optionally, the FB can be initialised outside the provider
    * and passed in, instead of being initialised by the provider.
    * Note: it should only be passed in when it has emitted the 'ready'
    * event, to ensure that the flags are properly set.
@@ -66,3 +73,27 @@ export interface EnhancedComponent extends React.Component {
   // tslint:disable-next-line:invalid-void
   componentDidUpdate(prevProps: ProviderConfig): Promise<void>;
 }
+
+/**
+ * Return type of `initClient`.
+ */
+export interface AllFlagsFbClient {
+  /**
+   * Contains all flags from FeatBit.
+   */
+  flags: IFeatureFlagSet;
+
+  /**
+   * An instance of `FB` from the FeatBit JS SDK.
+   */
+  fbClient: FB;
+}
+
+/**
+ * Map of camelized flag keys to original unmodified flag keys.
+ */
+export interface FlagKeyMap {
+  [camelCasedKey: string]: string;
+}
+
+export * from 'featbit-js-client-sdk';

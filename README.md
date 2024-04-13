@@ -19,7 +19,7 @@ The React SDK offers two custom hooks. If you want to use these, then you must u
 ### Install
 npm
 ```
-npm install featbit-react-client-sdk
+npm install @featbit/react-client-sdk
 ```
 
 ### Prerequisite
@@ -39,7 +39,7 @@ The following code demonstrates:
 
 ```javascript
 import { createRoot } from 'react-dom/client';
-import { asyncWithFbProvider, useFlags, FbProvider } from 'featbit-react-client-sdk';
+import { asyncWithFbProvider, useFlags, FbProvider } from '@featbit/react-client-sdk';
 
 function Game() {
   return (
@@ -87,8 +87,11 @@ function APP() {
   // );
 })();
 
-
 ```
+
+## Examples
+- [React APP](./examples/react-app)
+
 ## SDK
 
 ### Initializing the SDK
@@ -106,7 +109,7 @@ The **asyncWithFbProvider** function initializes the React SDK and returns a pro
 **asyncWithFbProvider** cannot be deferred. You must initialize **asyncWithFbProvider** at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of the app.
 
 ```javascript
-import { asyncWithFbProvider } from 'featbit-react-client-sdk';
+import { asyncWithFbProvider } from '@featbit/react-client-sdk';
 
 (async () => {
   const config = {
@@ -149,7 +152,7 @@ The asyncWithFbProvider function uses the Hooks API, which requires React versio
 The **withFbProvider** function initializes the React SDK and wraps your root component in a **Context.Provider**. It accepts a **ProviderConfig** object used to configure the React SDK.
 
 ```javascript
-import { withFbProvider } from 'featbit-react-client-sdk';
+import { withFbProvider } from '@featbit/react-client-sdk';
 
 const config = {
   options: {
@@ -180,7 +183,7 @@ There are two ways to consume the flags.
 
 ##### Using contextType property
 ```javascript
-import { context } from 'featbit-react-client-sdk';
+import { context } from '@featbit/react-client-sdk';
 
 class MyComponent extends React.Component {
   static contextType = context;
@@ -206,7 +209,7 @@ export default MyComponent;
 The return value of withFbConsumer is a wrapper function that takes your component and returns a React component injected with flags & fbClient as props.
 
 ```javascript
-import { withFbConsumer } from 'featbit-react-client-sdk';
+import { withFbConsumer } from '@featbit/react-client-sdk';
 
 class MyComponent extends React.Component {
     render() {
@@ -230,7 +233,7 @@ There are two ways to consume the flags.
 The return value of withFbConsumer is a wrapper function that takes your component and returns a React component injected with flags & fbClient as props.
 
 ```javascript
-import { withFbConsumer } from 'featbit-react-client-sdk';
+import { withFbConsumer } from '@featbit/react-client-sdk';
 
 const Home = ({ flags, fbClient /*, ...otherProps */ }) => {
   // You can call any of the methods from the JavaScript SDK
@@ -257,7 +260,7 @@ useFbClient is the second custom hook which returns the underlying FeatBit's Jav
 Here is an example of how to use those two hooks:
 
 ```javascript
-import { useFlags, useFbClient } from 'featbit-react-client-sdk';
+import { useFlags, useFbClient } from '@featbit/react-client-sdk';
 
 const MyComponent = props => {
     const fbClient = useFbClient();
@@ -323,6 +326,24 @@ The following is an example ProviderConfig object including each of the above pr
 }
 
 ```
+### Populating the SDK with default values
+As mentioned above, you can use the **options.bootstrap** option to populate the SDK with default values. This option is useful when you want to provide default values for your flags before the SDK initializes.
+If a flag is not available from the SDK, the SDK uses the default value you provide in the bootstrap object.
+
+```javascript
+options: {
+    bootstrap: [
+      { 
+          "id": "my-flag",
+          "variation": "on"
+      },
+      {
+        "id": "second-flag",
+        "variation": "AlphaGo"
+      }
+    ]
+}
+```
 
 ## Flag keys
 FeatBit primarily identifies feature flags by a key which must contain only alphanumeric characters, dots (.), underscores (_), and dashes (-). These keys are used across all of our APIs as well as in the SDKs to identify flags.
@@ -335,6 +356,8 @@ Be aware, by activating useCamelCaseFlagKeys, you would see following problems:
 - If a flag key contains three or more capital letters in a row, the SDK automatically converts all letters between the first and last capital letter to lower case. For example, the SDK converts a flag with the key devQAFlagTest to devQaFlagTest. If you use devQAFlagTest with the useFlags() hook, the SDK does not find the flag.
 - Because the camel-case functionality is implemented in the React SDK instead of in the underlying JavaScript SDK, the underlying client object and functionality provided by the JavaScript SDK reflect flag keys in their original format. Only React-specific contexts such as your injected props use camel case.
 
+> If you've enabled the useCamelCaseFlagKeys option to true, attempting to access a flag using its original key will trigger a warning message in the console:
+> You're attempting to access a flag with its original keyId: xxx, even though useCamelCaseFlagKeys is set to true.
 ## Importing types
 
 In addition to its own bundled types, the React SDK uses types from featbit-js-client-sdk. If you use Typescript and you need to use featbit-js-client-sdk types, you can install the featbit-js-client-sdk package as a dev dependency. You can then import the types you want directly from featbit-js-client-sdk.

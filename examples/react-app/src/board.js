@@ -1,6 +1,6 @@
 import Square from './square';
 import React from 'react';
-import { withFbConsumer } from 'featbit-react-client-sdk';
+import { withFbConsumer } from '@featbit/react-client-sdk';
 
 class Board extends React.Component {
     renderSquare(i) {

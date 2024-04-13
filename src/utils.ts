@@ -1,6 +1,5 @@
 import { FB, IFeatureFlagSet, IFeatureFlagChange } from 'featbit-js-client-sdk';
 import camelCase from 'lodash.camelcase';
-import { defaultReactOptions, FbReactOptions } from './types';
 
 /**
  * Transforms a set of flags so that their keys are camelCased. This function ignores
@@ -25,19 +24,15 @@ export const camelCaseKeys = (rawFlags: IFeatureFlagSet) => {
  * Gets the flags to pass to the provider from the changeset.
  *
  * @param changes the `LDFlagChangeset` from the ldClient onchange handler.
- * @param reactOptions reactOptions.useCamelCaseFlagKeys determines whether to change the flag keys to camelCase
- * @return an `LDFlagSet` with the current flag values from the LDFlagChangeset filtered by `targetFlags`. The returned
+ * @return an `IFeatureFlagSet` with the current flag values from the IFeatureFlagChange[]. The returned
  * object may be empty `{}` if none of the targetFlags were changed.
  */
 export const getFlattenedFlagsFromChangeset = (
-  changes: IFeatureFlagChange[],
-  reactOptions: FbReactOptions,
+  changes: IFeatureFlagChange[]
 ): IFeatureFlagSet => {
   const flattened: IFeatureFlagSet = {};
   changes.forEach((c: IFeatureFlagChange) => {
-    // tslint:disable-next-line:no-unsafe-any
-    const flagKey = reactOptions.useCamelCaseFlagKeys ? camelCase(c.id) : c.id;
-    flattened[flagKey] = c.newValue;
+    flattened[c.id] = c.newValue;
   })
 
   return flattened;
@@ -47,17 +42,15 @@ export const getFlattenedFlagsFromChangeset = (
  * Retrieves flag values.
  *
  * @param fbClient FeatBit client
- * @param reactOptions Initialization options for the React SDK
  *
  * @returns an `IFeatureFlagSet` with the current flag values from FeatBit
  */
 export const fetchFlags = (
-  fbClient: FB,
-  reactOptions: FbReactOptions = defaultReactOptions,
+  fbClient: FB
 ) => {
   let rawFlags: IFeatureFlagSet = fbClient.getAllFeatureFlags();
 
-  return reactOptions.useCamelCaseFlagKeys ? camelCaseKeys(rawFlags) : rawFlags;
+  return rawFlags;
 };
 
 export default {camelCaseKeys, getFlattenedFlagsFromChangeset, fetchFlags};

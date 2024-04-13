@@ -1,4 +1,4 @@
-import { withFbConsumer } from 'featbit-react-client-sdk';
+import { withFbConsumer } from '@featbit/react-client-sdk';
 
 function Square(props) {
     const { flags, fbClient } = props;

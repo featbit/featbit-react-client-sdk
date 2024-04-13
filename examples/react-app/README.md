@@ -26,6 +26,13 @@ npm install
 npm run start
 ```
 
+By default, the example uses an environment created on FeatBit demo site, you can change the environment by updating the following variables in the [config.js](./src/config.js) file:
+
+```javascript
+const secret = 'YOUR ENVIRONMENT SECRET';
+const api = 'EVALUATION_SERVER_URL';
+````
+
 Note: if you see the following error in the navigator console: 
 > Hooks can only be called inside the body of a function component. 
 
@@ -48,42 +55,15 @@ If you want to play with real data, you need to create an account and the follow
 const flags = [
     {
         "id": "robot",
-        "variation": "阿尔法猫",
-        "timestamp": 1646688885330,
-        "variationOptions": [{
-            "id": 1,
-            "value": "深蓝"
-        }, {
-            "id": 2,
-            "value": "阿尔法猫"
-        }],
-        "sendToExperiment": true
+        "variation": "AlphaGo"
     },
     {
         "id": "用户信息模块",
-        "variation": "v1.0.0",
-        "timestamp": 1646380582151,
-        "variationOptions": [{
-            "id": 1,
-            "value": "v1.0.0"
-        }, {
-            "id": 2,
-            "value": "v1.1.0"
-        }],
-        "sendToExperiment": true
+        "variation": "v1.0.0"
     },
     {
         "id": "user_info_db_migration",
-        "variation": "azure",
-        "timestamp": 1646267387598,
-        "variationOptions": [{
-            "id": 1,
-            "value": "azure"
-        }, {
-            "id": 2,
-            "value": "aws"
-        }],
-        "sendToExperiment": true
+        "variation": "azure"
     }
 ];
 ```

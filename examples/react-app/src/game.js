@@ -3,7 +3,7 @@ import './index.css';
 import Board from './board';
 import WinBoard from './winEffect';
 import UserInfo from './userInfo';
-import { context, withFbProvider } from 'featbit-react-client-sdk';
+import { context, withFbProvider } from '@featbit/react-client-sdk';
 import { configWithUser, userName } from './config';
 
 class Game extends React.Component {
@@ -114,14 +114,11 @@ class Game extends React.Component {
               flags.用户信息模块 === 'v1.0.0' ?
               <div>
                 <div style={{ marginTop: "10px" }}>
-                  玩家： {this.state.userName}
+                  Player： {this.state.userName}
                 </div>
               </div> :
 
-              <UserInfo databaseV={this.state.databaseV}
-                playerName={this.state.userName}
-                totalGameCount={Math.round(Math.random() * 1000).toString()}
-                wonGameCount={Math.round(Math.random() * (Math.random() * 100)).toString()} />
+              <UserInfo playerName={this.state.userName} />
           }
           {
             this.state.showWinEffect === 'true' ? <WinBoard playerName={winner} /> : null
@@ -129,7 +126,7 @@ class Game extends React.Component {
 
         </div>
         <div className="game-info">
-          <div>对手：{flags.robot}</div>
+          <div>Against：{flags.robot}</div>
           <div>{status}</div>
           <ol>{moves}</ol>
           <div></div>
