@@ -19,6 +19,7 @@ The React SDK offers two custom hooks. If you want to use these, then you must u
 ### Install
 npm
 ```
+npm install featbit-js-client-sdk
 npm install @featbit/react-client-sdk
 ```
 
