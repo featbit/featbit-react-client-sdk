@@ -361,8 +361,4 @@ Be aware, by activating useCamelCaseFlagKeys, you would see following problems:
 > You're attempting to access a flag with its original keyId: xxx, even though useCamelCaseFlagKeys is set to true.
 ## Importing types
 
-In addition to its own bundled types, the React SDK uses types from featbit-js-client-sdk. If you use Typescript and you need to use featbit-js-client-sdk types, you can install the featbit-js-client-sdk package as a dev dependency. You can then import the types you want directly from featbit-js-client-sdk.
-
-If you use eslint, the SDK requires that you add featbit-js-client-sdk as a dev dependency. Otherwise, eslint will report a no-extraneous-dependencies error.
-
-
+In addition to its own bundled types, the React SDK uses types from featbit-js-client-sdk, those types are re-exported by the React SDK. You can import these types directly from the React SDK
