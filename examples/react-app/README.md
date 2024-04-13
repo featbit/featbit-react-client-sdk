@@ -26,13 +26,6 @@ npm install
 npm run start
 ```
 
-By default, the example uses an environment created on FeatBit demo site, you can change the environment by updating the following variables in the [config.js](./src/config.js) file:
-
-```javascript
-const secret = 'YOUR ENVIRONMENT SECRET';
-const api = 'EVALUATION_SERVER_URL';
-````
-
 Note: if you see the following error in the navigator console: 
 > Hooks can only be called inside the body of a function component. 
 
@@ -47,9 +40,14 @@ npm link ../examples/react-app/node_modules/react
 - square.js: use **withFbConsumer** in a **function component**
 - board.js: use **withFbConsumer** in a class component
 
-In the current example we used local data, the synchronization with evaluation server is disabled.
+In the current example we used an environment created on FeatBit demo site, you can change the environment by updating the following variables in the [config.js](./src/config.js) file:
 
-If you want to play with real data, you need to create an account and the following feature flags on FeatBit
+```javascript
+const secret = 'YOUR ENVIRONMENT SECRET';
+const api = 'EVALUATION_SERVER_URL';
+````
+
+If you want to play with real data, you need to create your own environment and the following feature flags on FeatBit
 
 ```javascript
 const flags = [
