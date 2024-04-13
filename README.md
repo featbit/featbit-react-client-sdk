@@ -173,6 +173,7 @@ const config = {
 
 export default withFbProvider(config)(YourApp);
 ```
+#### Subscribing to flag changes
 
 The React SDK automatically subscribes to flag change events. This is different from the JavaScript SDK, where customers need to opt in to event listening.
 
@@ -283,8 +284,59 @@ const MyComponent = props => {
 export default MyComponent;
 
 ```
+### Switch user after initialization
+
+If the user is not available during the initialization, you can call the **identity()** method on **fbClient** to set the user after initialization.
+
+#### Switch user in class component
+
+```javascript
+import { withFbConsumer, useFbClient } from '@featbit/react-client-sdk';
+
+class LoginComponent extends React.Component {
+    
+  handleLogin = async () => {
+    const { fbClient } = this.props;
+    const user = {}; // use your user object
+    await fbClient.identify(user);
+  }
+    
+  render() {
+    return (
+      <div>
+        <button onClick={this.handleLogin}>Login</button>
+      </div>
+    );
+  }
+}
+
+export default withFbConsumer()(LoginComponent)
+````
+
+#### Switch user in function component
+
+```javascript
+import { useFbClient } from '@featbit/react-client-sdk';
+
+const LoginComponent = () => {
+  const fbClient = useFbClient();
+
+  handleLogin = async () => {
+    const user = {}; // use your user object
+    await fbClient.identify(user);
+  }
+    
+  return (
+      <div>
+        <button onClick={handleLogin}>Login</button>
+      </div>
+  );
+}
+
+````
 
 ### Configuring the React SDK
+
 The **ProviderConfig** object provides configuration to both **withFbProvider** and **asyncWithFbProvider** function.
 
 The only mandatory property is the **options**, it is the config needed to initialize the featbit-js-client-sdk. To know more details about the **options**, please refer to [featbit-js-client-sdk](https://github.com/featbit/featbit-js-client-sdk). All other properties are React SDK related.
@@ -327,6 +379,7 @@ The following is an example ProviderConfig object including each of the above pr
 }
 
 ```
+
 ### Populating the SDK with default values
 As mentioned above, you can use the **options.bootstrap** option to populate the SDK with default values. This option is useful when you want to provide default values for your flags before the SDK initializes.
 If a flag is not available from the SDK, the SDK uses the default value you provide in the bootstrap object.

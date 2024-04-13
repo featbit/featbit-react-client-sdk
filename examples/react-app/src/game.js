@@ -4,7 +4,7 @@ import Board from './board';
 import WinBoard from './winEffect';
 import UserInfo from './userInfo';
 import { context, withFbProvider } from '@featbit/react-client-sdk';
-import { configWithUser, userName } from './config';
+import { configWithAnonymousUser, configWithUser, userName } from './config';
 
 class Game extends React.Component {
   constructor(props) {
@@ -157,7 +157,7 @@ function calculateWinner(squares) {
 }
  
 // Uncomment the following line to use withFbProvider
-export default withFbProvider(configWithUser)(Game);
+export default withFbProvider(configWithAnonymousUser)(Game);
 
 // Uncommennt the following line to use asyncWithFbProvider
 // export default Game;
