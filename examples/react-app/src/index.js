@@ -9,11 +9,11 @@ const root = createRoot(document.getElementById('root'));
 // Un comment this block to use asyncWithFbProvider to init the React SDK
 // You will need to change the last line in the game.js file
 // (async () => {
-//     const FbProvider = await asyncWithFbProvider(configWithAnonymousUser);
+//     const Provider = await asyncWithFbProvider(configWithAnonymousUser);
 //     root.render(
-//         <FbProvider>
+//         <Provider>
 //             <Game />,
-//         </FbProvider>
+//         </Provider>
 //     );
 // })();
 

@@ -71,11 +71,11 @@ function APP() {
   };
   
   const root = createRoot(document.getElementById('root'));
-  const FbProvider = await asyncWithFbProvider(configWithAnonymousUser);
+  const Provider = await asyncWithFbProvider(configWithAnonymousUser);
   root.render(
-    <FbProvider>
+    <Provider>
       <Game />,
-    </FbProvider>
+    </Provider>
   );
   
   // Use the following code in React < 18.0.0
