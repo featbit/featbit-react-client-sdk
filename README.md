@@ -358,7 +358,7 @@ Be aware, by activating useCamelCaseFlagKeys, you would see following problems:
 - Because the camel-case functionality is implemented in the React SDK instead of in the underlying JavaScript SDK, the underlying client object and functionality provided by the JavaScript SDK reflect flag keys in their original format. Only React-specific contexts such as your injected props use camel case.
 
 > If you've enabled the useCamelCaseFlagKeys option to true, attempting to access a flag using its original key will trigger a warning message in the console:
-> You're attempting to access a flag with its original keyId: xxx, even though useCamelCaseFlagKeys is set to true.
+> **You're attempting to access a flag with its original keyId: xxx, even though useCamelCaseFlagKeys is set to true.**
 ## Importing types
 
 In addition to its own bundled types, the React SDK uses types from featbit-js-client-sdk, those types are re-exported by the React SDK. You can import these types directly from the React SDK
