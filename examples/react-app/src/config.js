@@ -1,7 +1,7 @@
 export const userName = 'The user 01';
 
 const secret = 'Obg68EqYZk27JTxphPgy7At1aJ8GaAtEaIA1fb3IpuEA';
-const api = 'https://featbit-tio-eval.zeabur.app';
+const api = 'https://app-eval.featbit.co';
 
 const flags = [
     {
