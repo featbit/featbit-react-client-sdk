@@ -194,7 +194,9 @@ The complete liste of the available properties:
 
   asyncWithFbProvider does not support deferInitialization. You must initialize asyncWithFbProvider at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of your app.
 
-  By deferring SDK initialization, you defer all steps which take place as part of SDK initialization, including reading flag values from local storage and sending the SDK's ready event.
+  By deferring SDK initialization, you def
+- 
+- er all steps which take place as part of SDK initialization, including reading flag values from local storage and sending the SDK's ready event.
 
   The one exception to this rule is that the SDK continues to load bootstrapped flag values as long as the bootstrapped values are provided as a map of flag keys and values. If you indicate that the SDK should bootstrap flags from local storage, this will not happen until the SDK initializes.
 
@@ -403,12 +405,12 @@ options: {
 ## Flag keys
 FeatBit primarily identifies feature flags by a key which must contain only alphanumeric characters, dots (.), underscores (_), and dashes (-). These keys are used across all of our APIs as well as in the SDKs to identify flags.
 
-However, JavaScript and React cannot access keys with a dot notation, so the React SDK can change all flag keys to camel case (you need to activate this with the **reactOptions.useCamelCaseFlagKeys** parameter). A flag with key dev-flag-test is accessible as flags.devFlagTest. This notation **flags['dev-flag-test']** should be used if useCamelCaseFlagKeys is disabled, which is by default.
+However, JavaScript and React cannot access keys with a dot notation, so the React SDK can change all flag keys to camel case (you need to activate this with the **reactOptions.useCamelCaseFlagKeys** parameter). A flag with key `dev-flag-test` is accessible as `flags.devFlagTest`. This notation **flags['dev-flag-test']** should be used if useCamelCaseFlagKeys is disabled, which is by default.
 
 Be aware, by activating useCamelCaseFlagKeys, you would see following problems:
 
-- It is possible to induce a key collision if there are multiple flag keys which resolve to the same camel-case key. For example, dev-flag-test and dev.flag.test are unique keys, but the React SDK changes them to the same camel-case key.
-- If a flag key contains three or more capital letters in a row, the SDK automatically converts all letters between the first and last capital letter to lower case. For example, the SDK converts a flag with the key devQAFlagTest to devQaFlagTest. If you use devQAFlagTest with the useFlags() hook, the SDK does not find the flag.
+- It is possible to induce a key collision if there are multiple flag keys which resolve to the same camel-case key. For example, `dev-flag-test` and `dev.flag.test` are unique keys, but the React SDK changes them to the same camel-case key.
+- If a flag key contains three or more capital letters in a row, the SDK automatically converts all letters between the first and last capital letter to lower case. For example, the SDK converts a flag with the key `devQAFlagTest` to `devQaFlagTest`. If you use devQAFlagTest with the useFlags() hook, the SDK does not find the flag.
 - Because the camel-case functionality is implemented in the React SDK instead of in the underlying JavaScript SDK, the underlying client object and functionality provided by the JavaScript SDK reflect flag keys in their original format. Only React-specific contexts such as your injected props use camel case.
 
 > If you've enabled the useCamelCaseFlagKeys option to true, attempting to access a flag using its original key will trigger a warning message in the console:
