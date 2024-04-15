@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import context, { FbContext } from './context';
-import { FB } from "featbit-js-client-sdk";
+import { FB } from "@featbit/js-client-sdk";
 
 // tslint:disable:max-line-length
 /**
@@ -9,7 +9,7 @@ import { FB } from "featbit-js-client-sdk";
  * context set up by `withFbProvider`. You will still need to use the `withFbProvider` HOC
  * to initialise the react sdk to use this custom hook.
  *
- * @return The `featbit-js-client-sdk` `FB` object
+ * @return The `@featbit/js-client-sdk` `FB` object
  */
 // tslint:enable:max-line-length
 const useFbClient = () => {

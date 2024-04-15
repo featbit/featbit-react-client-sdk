@@ -29,12 +29,12 @@
     "prettier": "prettier --write 'src/*.@(js|ts|tsx|json|css)'"
   },
   "devDependencies": {
+    "@featbit/js-client-sdk": "^2.0.0",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/lodash.camelcase": "^4.3.6",
     "@types/prop-types": "^15.7.4",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
-    "featbit-js-client-sdk": "^1.0.6",
     "prettier": "^1.18.2",
     "prop-types": "^15.7.2",
     "react": "^18.0.0",
@@ -51,7 +51,7 @@
     "lodash.camelcase": "^4.3.0"
   },
   "peerDependencies": {
-    "featbit-js-client-sdk": "^1.0.6",
+    "@featbit/js-client-sdk": "^2.0.0",
     "react": "^16.6.3 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.4 || ^17.0.0 || ^18.0.0"
   }

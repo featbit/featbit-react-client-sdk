@@ -8,8 +8,8 @@ Be aware, this is a client side SDK, it is intended for use in a single-user con
 > The React SDK is based on the JavaScript SDK  
 The React SDK builds on FeatBit's JavaScript SDK to provide a better integration for use in React applications. As a result, much of the JavaScript SDK functionality is also available for the React SDK to use. 
 
-The **fbClient** in the current doc is the same object as **fbClient** in the featbit-js-client-sdk SDK.
-To learn more about our JavaScript client SDK, please go to this repository [featbit-js-client-sdk](https://github.com/featbit/featbit-js-client-sdk)
+The **fbClient** in the current doc is the same object as **fbClient** in the `@featbit/js-client-sdk` SDK.
+To learn more about our JavaScript client SDK, please go to this repository [@featbit/js-client-sdk](https://github.com/featbit/featbit-js-client-sdk)
 
 > SDK version compatibility  
 The React SDK is compatible with React version 16.3.0 and higher.
@@ -19,7 +19,7 @@ The React SDK offers two custom hooks. If you want to use these, then you must u
 ### Install
 
 ```
-npm install featbit-js-client-sdk
+npm install @featbit/js-client-sdk
 npm install @featbit/react-client-sdk
 ```
 
@@ -182,11 +182,11 @@ The React SDK automatically subscribes to flag change events. This is different 
 
 The **ProviderConfig** object provides configuration to both **withFbProvider** and **asyncWithFbProvider** function.
 
-The only mandatory property is the **options**, it is the config needed to initialize the featbit-js-client-sdk. To know more details about the **options**, please refer to [featbit-js-client-sdk](https://github.com/featbit/featbit-js-client-sdk). All other properties are React SDK related.
+The only mandatory property is the **options**, it is the config needed to initialize the `@featbit/js-client-sdk`. To know more details about the **options**, please refer to [@featbit/js-client-sdk](https://github.com/featbit/featbit-js-client-sdk). All other properties are React SDK related.
 
 The complete liste of the available properties:
 
-- **options**: the initialization config for featbit-js-client-sdk. **mandatory**
+- **options**: the initialization config for `@featbit/js-client-sdk`. **mandatory**
 
   You can use the **[options.bootstrap](https://github.com/featbit/featbit-js-client-sdk?tab=readme-ov-file#bootstrap)** option to populate the SDK with default values.
 - **reactOptions**: You can use this option to enable automatic camel casing of flag keys when using the React SDK. the default value is false  **not mandatory**
@@ -417,4 +417,4 @@ Be aware, by activating useCamelCaseFlagKeys, you would see following problems:
 > **You're attempting to access a flag with its original keyId: xxx, even though useCamelCaseFlagKeys is set to true.**
 ## Importing types
 
-In addition to its own bundled types, the React SDK uses types from featbit-js-client-sdk, these types are re-exported by the React SDK. You can import these types directly from the React SDK
+In addition to its own bundled types, the React SDK uses types from `@featbit/js-client-sdk`, these types are re-exported by the React SDK. You can import these types directly from the React SDK

@@ -1,4 +1,4 @@
-import { FB, IFeatureFlagSet } from 'featbit-js-client-sdk';
+import { FB, IFeatureFlagSet } from '@featbit/js-client-sdk';
 import { createContext } from 'react';
 import { FlagKeyMap } from "./types";
 

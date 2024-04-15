@@ -1,4 +1,4 @@
-import { FB, IFeatureFlagSet, IFeatureFlagChange } from 'featbit-js-client-sdk';
+import { FB, IFeatureFlagSet, IFeatureFlagChange } from '@featbit/js-client-sdk';
 import camelCase from 'lodash.camelcase';
 
 /**

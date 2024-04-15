@@ -44,7 +44,8 @@ In the current example we used an environment created on FeatBit demo site, you 
 
 ```javascript
 const secret = 'YOUR ENVIRONMENT SECRET';
-const api = 'EVALUATION_SERVER_URL';
+const streamingUri = 'THE_STREAMING_URL';
+const eventsUri = 'THE_EVENTS_URL';
 ````
 
 If you want to play with real data, you need to create your own environment and the following feature flags on FeatBit
@@ -69,7 +70,8 @@ then update the two variables in the [config.js](./src/board.js) file with the f
 
 ```javascript
 const secret = 'use your environment secret';
-const streamingUrl = 'use your environment streaming url';
+const streamingUri = 'use your environment streaming url';
+const eventsUri = 'use your environment events url';
 const enableDataSync = true;
 ```
 

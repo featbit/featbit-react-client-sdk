@@ -1,4 +1,4 @@
-import { FB, IFeatureFlagSet, IOption } from 'featbit-js-client-sdk';
+import { FB, IFeatureFlagSet, IOption } from '@featbit/js-client-sdk';
 
 /**
  * Initialization options for the FeatBit React SDK. These are in addition to the options exposed
@@ -96,4 +96,4 @@ export interface FlagKeyMap {
   [camelCasedKey: string]: string;
 }
 
-export * from 'featbit-js-client-sdk';
+export * from '@featbit/js-client-sdk';

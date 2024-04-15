@@ -6,18 +6,18 @@ import IntrinsicAttributes = React.JSX.IntrinsicAttributes;
 
 /**
  * `withFbProvider` is a function which accepts a config object which is used to
- * initialize `featbit-js-client-sdk`.
+ * initialize `@featbit/js-client-sdk`.
  *
  * This HOC handles passing configuration to the `FbProvider`, which does the following:
- * - It initializes the fbClient instance by calling `featbit-js-client-sdk` init on `componentDidMount`
+ * - It initializes the fbClient instance by calling `@featbit/js-client-sdk` init on `componentDidMount`
  * - It saves all flags and the fbClient instance in the context API
  * - It subscribes to flag changes and propagate them through the context API
  *
  * The difference between `withFbProvider` and `asyncWithFbProvider` is that `withFbProvider` initializes
- * `featbit-js-client-sdk` at `componentDidMount`. This means your flags and the fbClient are only available after
+ * `@featbit/js-client-sdk` at `componentDidMount`. This means your flags and the fbClient are only available after
  * your app has mounted. This can result in a flicker due to flag changes at startup time.
  *
- * `asyncWithFbProvider` initializes `featbit-js-client-sdk` at the entry point of your app prior to render.
+ * `asyncWithFbProvider` initializes `@featbit/js-client-sdk` at the entry point of your app prior to render.
  * This means that your flags and the fbClient are ready at the beginning of your app. This ensures your app does not
  * flicker due to flag changes at startup time.
  *
@@ -26,8 +26,8 @@ import IntrinsicAttributes = React.JSX.IntrinsicAttributes;
  */
 export function withFbProvider<T extends IntrinsicAttributes = {}>(
   config: ProviderConfig,
-): (WrappedComponent: React.ComponentType<T>) => React.ComponentType<T> {
-  return function withFbProviderHoc(WrappedComponent: React.ComponentType<T>): React.ComponentType<T> {
+): (WrappedComponent: React.ComponentType<T>) => any {
+  return function withFbProviderHoc(WrappedComponent: React.ComponentType<T>): any {
     const {reactOptions: userReactOptions} = config;
     const reactOptions = {...defaultReactOptions, ...userReactOptions};
     const providerProps = {...config, reactOptions};

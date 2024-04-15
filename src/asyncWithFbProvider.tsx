@@ -3,22 +3,22 @@ import { ProviderConfig, defaultReactOptions } from './types';
 import { Provider } from './context';
 import { initClient } from './initClient';
 import { getFlattenedFlagsFromChangeset } from './utils';
-import { IFeatureFlagChange, IFeatureFlagSet } from 'featbit-js-client-sdk';
+import { IFeatureFlagChange, IFeatureFlagSet } from '@featbit/js-client-sdk';
 import getFlagsProxy from "./getFlagsProxy";
 
 /**
- * This is an async function which initializes feature-flags.co's JS SDK (`featbit-js-client-sdk`)
+ * This is an async function which initializes feature-flags.co's JS SDK (`@featbit/js-client-sdk`)
  * and awaits it so all flags and the fbClient are ready before the consumer app is rendered.
  *
  * The difference between `withFbProvider` and `asyncWithFbProvider` is that `withFbProvider` initializes
- * `featbit-js-client-sdk` at componentDidMount. This means your flags and the fbClient are only available after
+ * `@featbit/js-client-sdk` at componentDidMount. This means your flags and the fbClient are only available after
  * your app has mounted. This can result in a flicker due to flag changes at startup time.
  *
- * `asyncWithFbProvider` initializes `featbit-js-client-sdk` at the entry point of your app prior to render.
+ * `asyncWithFbProvider` initializes `@featbit/js-client-sdk` at the entry point of your app prior to render.
  * This means that your flags and the fbClient are ready at the beginning of your app. This ensures your app does not
  * flicker due to flag changes at startup time.
  *
- * `asyncWithFbProvider` accepts a config object which is used to initialize `featbit-js-client-sdk`.
+ * `asyncWithFbProvider` accepts a config object which is used to initialize `@featbit/js-client-sdk`.
  *
  * `asyncWithFbProvider` does not support the `deferInitialization` config option because `asyncWithFbProvider` needs
  * to be initialized at the entry point prior to render to ensure your flags and the fbClient are ready at the beginning

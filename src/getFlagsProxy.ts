@@ -1,5 +1,5 @@
 import { defaultReactOptions, FbReactOptions, FlagKeyMap } from "./types";
-import { FB, IFeatureFlagSet } from "featbit-js-client-sdk";
+import { FB, IFeatureFlagSet } from "@featbit/js-client-sdk";
 import camelCase from "lodash.camelcase";
 
 export default function getFlagsProxy(
