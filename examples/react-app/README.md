@@ -31,7 +31,7 @@ Note: if you see the following error in the navigator console:
 
 Then run the following command in the root folder of the SDK and then rerun the example: 
 ```
-npm link ../examples/react-app/node_modules/react
+npm link ./examples/react-app/node_modules/react
 ```
 
 # Explications
