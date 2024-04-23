@@ -21,25 +21,25 @@ const bootstrapFlags = [
   }
 ] as IFlagBase[];
 
-// export const fbConfig = {
-//   options: {
-//     user: {
-//       name: 'thename',
-//       keyId: 'thekey',
-//       customizedProperties: []
-//     },
-//     streamingUri: 'wss://app-eval.featbit.co',
-//     eventsUri: 'https://app-eval.featbit.co',
-//     sdkKey: 'Obg68EqYZk27JTxphPgy7At1aJ8GaAtEaIA1fb3IpuEA',
-//     bootstrap: bootstrapFlags,
-//   },
-//   reactOptions: {
-//     useCamelCaseFlagKeys: true, // default is false
-//     sendEventsOnFlagRead: true // default is true
-//   }
-// };
-
 export const fbConfig = {
+  options: {
+    user: {
+      name: 'thename',
+      keyId: 'thekey',
+      customizedProperties: []
+    },
+    streamingUri: 'wss://app-eval.featbit.co',
+    eventsUri: 'https://app-eval.featbit.co',
+    sdkKey: 'Obg68EqYZk27JTxphPgy7At1aJ8GaAtEaIA1fb3IpuEA',
+    bootstrap: bootstrapFlags,
+  },
+  reactOptions: {
+    useCamelCaseFlagKeys: true, // default is false
+    sendEventsOnFlagRead: true // default is true
+  }
+};
+
+export const fbConfigWithPolling = {
   options: {
     user: {
       name: 'thename',
@@ -49,8 +49,8 @@ export const fbConfig = {
     streamingUri: 'ws://localhost:5100',
     eventsUri: 'http://localhost:5100',
     pollingUri: 'http://localhost:5100',
-    //dataSyncMode: DataSyncModeEnum.POLLING,
-    sdkKey: 'x5-p4nMlW0aLyzE5TpTtmwwvvdZpVB4Ey-aNea3wffFw',
+    dataSyncMode: DataSyncModeEnum.POLLING,
+    sdkKey: 'YOUR_SDK_KEY_HERE',
     bootstrap: bootstrapFlags,
   },
   reactOptions: {

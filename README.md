@@ -8,9 +8,6 @@ Be aware, this is a client side SDK, it is intended for use in a single-user con
 > The React SDK is based on the JavaScript SDK  
 The React SDK builds on FeatBit's JavaScript SDK to provide a better integration for use in React applications. As a result, much of the JavaScript SDK functionality is also available for the React SDK to use. 
 
-The **fbClient** in the current doc is the same object as **fbClient** in the `@featbit/js-client-sdk` SDK.
-To learn more about our JavaScript client SDK, please go to this repository [@featbit/js-client-sdk](https://github.com/featbit/featbit-js-client-sdk)
-
 > SDK version compatibility  
 The React SDK is compatible with React version 16.3.0 and higher.
 The React SDK offers two custom hooks. If you want to use these, then you must use React version 16.8.0 or higher. To learn more, read the section [Using Hooks](#using-hooks).
@@ -92,6 +89,7 @@ function APP() {
 
 ## Examples
 - [React APP](./examples/react-app)
+- [Next.js APP](./examples/nextjs-app)
 
 ## SDK
 
@@ -194,9 +192,7 @@ The complete liste of the available properties:
 
   asyncWithFbProvider does not support deferInitialization. You must initialize asyncWithFbProvider at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of your app.
 
-  By deferring SDK initialization, you def
-- 
-- er all steps which take place as part of SDK initialization, including reading flag values from local storage and sending the SDK's ready event.
+  By deferring SDK initialization, you defer all steps which take place as part of SDK initialization, including reading flag values from local storage and sending the SDK's ready event.
 
   The one exception to this rule is that the SDK continues to load bootstrapped flag values as long as the bootstrapped values are provided as a map of flag keys and values. If you indicate that the SDK should bootstrap flags from local storage, this will not happen until the SDK initializes.
 
@@ -296,6 +292,7 @@ export default withFbConsumer()(Home);
 ```
 
 ##### Using Hooks
+
 The React SDK offers two custom hooks which you can use as an alternative to **withFbConsumer**: 
 - useFlags
 - useFbClient.
@@ -383,8 +380,9 @@ const LoginComponent = () => {
 
 ````
 
-### Populating the SDK with default values
-As mentioned above, you can use the **options.bootstrap** option to populate the SDK with default values. This option is useful when you want to provide default values for your flags before the SDK initializes.
+### Populating the SDK with fallback flag values
+
+As mentioned above, you can use the **options.bootstrap** option to populate the SDK with default values for your flags. This option is useful when you want to provide default values for your flags before the SDK initializes.
 If a flag is not available from the SDK, the SDK uses the default value you provide in the bootstrap object.
 
 ```javascript
