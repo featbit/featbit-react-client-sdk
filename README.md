@@ -1,6 +1,7 @@
 # Featbit Client-Side SDK for ReactJS
 
 ## Introduction
+
 This is the react client side SDK for the feature management platform [FeatBit](https://www.featbit.co).
 
 Be aware, this is a client side SDK, it is intended for use in a single-user context, which can be mobile, desktop or embeded applications. This SDK can only be ran in a browser environment, it is not suitable for React Native projects, React Native SDK will be available in our other repo.
@@ -11,6 +12,11 @@ The React SDK builds on FeatBit's JavaScript SDK to provide a better integration
 > SDK version compatibility  
 The React SDK is compatible with React version 16.3.0 and higher.
 The React SDK offers two custom hooks. If you want to use these, then you must use React version 16.8.0 or higher. To learn more, read the section [Using Hooks](#using-hooks).
+
+> Using with Next.js 
+If you are using this SDK with Next.js project, be aware that the SDK is not compatible with server-side rendering. You should use the SDK in the client side only.
+If you want to use the SDK in the server side, you should use [@featbit/node-server-sdk](https://github.com/featbit/featbit-node-server-sdk).
+
 
 ## Getting started
 ### Install
