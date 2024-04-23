@@ -1,9 +1,7 @@
-import React, { useState, useEffect, FunctionComponent, ReactNode } from 'react';
-import { ProviderConfig, defaultReactOptions } from './types';
+import React, { useState, useEffect, ReactNode } from 'react';
+import { ProviderConfig, defaultReactOptions, IFlagSet } from './types';
 import { Provider } from './context';
 import { initClient } from './initClient';
-import { getFlattenedFlagsFromChangeset } from './utils';
-import { IFeatureFlagChange, IFeatureFlagSet } from '@featbit/js-client-sdk';
 import getFlagsProxy from "./getFlagsProxy";
 
 /**
@@ -35,7 +33,7 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
   const reactOptions = {...defaultReactOptions, ...userReactOptions};
   const { flags: fetchedFlags, fbClient} = await initClient(reactOptions, options);
 
-  const bootstrapFlags = (options?.bootstrap || []).reduce((acc, flag) => {
+  const bootstrapFlags = (options?.bootstrap || []).reduce((acc: {[key: string]: string}, flag: any) => {
     acc[flag.id] = flag.variation;
     return acc;
   }, {} as {[key: string]: string});
@@ -47,8 +45,12 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
     }));
 
     useEffect(() => {
-      fbClient.on('ff_update', (changes: IFeatureFlagChange[]) => {
-        const updates: IFeatureFlagSet = getFlattenedFlagsFromChangeset(changes);
+      fbClient.on('update', (changedKeys: string[]) => {
+        const updates: IFlagSet = changedKeys.reduce(async (acc, key) => {
+          acc[key] = await fbClient.variation(key, '');
+          return acc;
+        }, {} as IFlagSet);
+
         if (Object.keys(updates).length > 0) {
           setState(({ unproxiedFlags }) => {
             const updatedUnproxiedFlags = { ...unproxiedFlags, ...updates };

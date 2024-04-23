@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import context, { FbContext } from './context';
-import { FB } from "@featbit/js-client-sdk";
+import { IFbClient } from "../../featbit-js-client-sdk-v2";
 
 // tslint:disable:max-line-length
 /**
@@ -12,10 +12,10 @@ import { FB } from "@featbit/js-client-sdk";
  * @return The `@featbit/js-client-sdk` `FB` object
  */
 // tslint:enable:max-line-length
-const useFbClient = () => {
+const useFbClient = (): IFbClient => {
   const { fbClient} = useContext<FbContext>(context);
 
-  return fbClient;
+  return fbClient!;
 };
 
 export default useFbClient;

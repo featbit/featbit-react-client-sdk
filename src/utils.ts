@@ -1,5 +1,6 @@
-import { FB, IFeatureFlagSet, IFeatureFlagChange } from '@featbit/js-client-sdk';
+import { IEvalDetail, IFbClient } from '@featbit/js-client-sdk';
 import camelCase from 'lodash.camelcase';
+import { IFlagSet } from "./types";
 
 /**
  * Transforms a set of flags so that their keys are camelCased. This function ignores
@@ -8,8 +9,8 @@ import camelCase from 'lodash.camelcase';
  * @param rawFlags A mapping of flag keys and their values
  * @return A transformed `IFeatureFlagSet` with camelCased flag keys
  */
-export const camelCaseKeys = (rawFlags: IFeatureFlagSet) => {
-  const flags: IFeatureFlagSet = {};
+export const camelCaseKeys = (rawFlags: IFlagSet) => {
+  const flags: IFlagSet = {};
   for (const rawFlag in rawFlags) {
     // Exclude system keys
     if (rawFlag.indexOf('$') !== 0) {
@@ -21,36 +22,18 @@ export const camelCaseKeys = (rawFlags: IFeatureFlagSet) => {
 };
 
 /**
- * Gets the flags to pass to the provider from the changeset.
- *
- * @param changes the `LDFlagChangeset` from the ldClient onchange handler.
- * @return an `IFeatureFlagSet` with the current flag values from the IFeatureFlagChange[]. The returned
- * object may be empty `{}` if none of the targetFlags were changed.
- */
-export const getFlattenedFlagsFromChangeset = (
-  changes: IFeatureFlagChange[]
-): IFeatureFlagSet => {
-  const flattened: IFeatureFlagSet = {};
-  changes.forEach((c: IFeatureFlagChange) => {
-    flattened[c.id] = c.newValue;
-  })
-
-  return flattened;
-};
-
-/**
  * Retrieves flag values.
  *
  * @param fbClient FeatBit client
  *
  * @returns an `IFeatureFlagSet` with the current flag values from FeatBit
  */
-export const fetchFlags = (
-  fbClient: FB
+export const fetchFlags = async (
+  fbClient: IFbClient
 ) => {
-  let rawFlags: IFeatureFlagSet = fbClient.getAllFeatureFlags();
+  const evalDetails: IEvalDetail<string>[] = await fbClient.getAllVariations();
 
-  return rawFlags;
+  return evalDetails.map(({flagKey, value}) => ({[flagKey]: value}));
 };
 
-export default {camelCaseKeys, getFlattenedFlagsFromChangeset, fetchFlags};
+export default {camelCaseKeys, fetchFlags};

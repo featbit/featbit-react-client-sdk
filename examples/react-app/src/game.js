@@ -4,7 +4,7 @@ import Board from './board';
 import WinBoard from './winEffect';
 import UserInfo from './userInfo';
 import { context, withFbProvider } from '@featbit/react-client-sdk';
-import { configWithAnonymousUser, configWithUser, userName } from './config';
+import { configWithUser, userName } from './config';
 
 class Game extends React.Component {
   constructor(props) {
@@ -82,6 +82,8 @@ class Game extends React.Component {
   render() {
     const { flags, fbClient } = this.context;
 
+    console.log(fbClient);
+
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
@@ -157,7 +159,7 @@ function calculateWinner(squares) {
 }
  
 // Uncomment the following line to use withFbProvider
-export default withFbProvider(configWithAnonymousUser)(Game);
+export default withFbProvider(configWithUser)(Game);
 
 // Uncommennt the following line to use asyncWithFbProvider
 // export default Game;

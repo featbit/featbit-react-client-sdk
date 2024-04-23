@@ -1,4 +1,8 @@
-import { FB, IFeatureFlagSet, IOption } from '@featbit/js-client-sdk';
+import { IFbClient, IOptions, FlagValue } from '@featbit/js-client-sdk';
+
+export interface IFlagSet {
+  [key: string]: FlagValue;
+}
 
 /**
  * Initialization options for the FeatBit React SDK. These are in addition to the options exposed
@@ -41,7 +45,7 @@ export interface ProviderConfig {
   /**
    * FeatBit initialization options. These options are common between FeatBit's JavaScript and React SDKs.
    */
-  options?: IOption;
+  options?: IOptions;
 
   /**
    * Additional initialization options specific to the React SDK.
@@ -56,7 +60,7 @@ export interface ProviderConfig {
    * Note: it should only be passed in when it has emitted the 'ready'
    * event, to ensure that the flags are properly set.
    */
-  fbClient?: FB;
+  fbClient?: IFbClient;
 }
 
 /**
@@ -65,7 +69,7 @@ export interface ProviderConfig {
  * @ignore
  */
 export interface EnhancedComponent extends React.Component {
-  subscribeToChanges(fbClient: FB): void;
+  subscribeToChanges(fbClient: IFbClient): void;
 
   // tslint:disable-next-line:invalid-void
   componentDidMount(): Promise<void>;
@@ -81,12 +85,12 @@ export interface AllFlagsFbClient {
   /**
    * Contains all flags from FeatBit.
    */
-  flags: IFeatureFlagSet;
+  flags: IFlagSet;
 
   /**
    * An instance of `FB` from the FeatBit JS SDK.
    */
-  fbClient: FB;
+  fbClient: IFbClient;
 }
 
 /**

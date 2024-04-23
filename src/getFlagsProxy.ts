@@ -1,13 +1,13 @@
-import { defaultReactOptions, FbReactOptions, FlagKeyMap } from "./types";
-import { FB, IFeatureFlagSet } from "@featbit/js-client-sdk";
+import { defaultReactOptions, FbReactOptions, FlagKeyMap, IFlagSet } from "./types";
+import { IFbClient } from "@featbit/js-client-sdk";
 import camelCase from "lodash.camelcase";
 
 export default function getFlagsProxy(
-  fbClient: FB,
-  bootstrapFlags: IFeatureFlagSet,
-  fetchedFlags: IFeatureFlagSet,
+  fbClient: IFbClient,
+  bootstrapFlags: IFlagSet,
+  fetchedFlags: IFlagSet,
   reactOptions: FbReactOptions = defaultReactOptions
-): { flags: IFeatureFlagSet; flagKeyMap: FlagKeyMap } {
+): { flags: IFlagSet; flagKeyMap: FlagKeyMap } {
   const { useCamelCaseFlagKeys = false, sendEventsOnFlagRead = true } = reactOptions;
   const [flags, flagKeyMap = {}] = useCamelCaseFlagKeys ? getCamelizedKeysAndFlagMap(fetchedFlags) : [fetchedFlags];
 
@@ -17,8 +17,8 @@ export default function getFlagsProxy(
   };
 }
 
-function getCamelizedKeysAndFlagMap(rawFlags: IFeatureFlagSet) {
-  const flags: IFeatureFlagSet = {};
+function getCamelizedKeysAndFlagMap(rawFlags: IFlagSet) {
+  const flags: IFlagSet = {};
   const flagKeyMap: FlagKeyMap = {};
   for (const rawFlagKey in rawFlags) {
     // Exclude system keys
@@ -33,19 +33,19 @@ function getCamelizedKeysAndFlagMap(rawFlags: IFeatureFlagSet) {
   return [flags, flagKeyMap];
 }
 
-function hasFlag(flags: IFeatureFlagSet, flagKey: string) {
+function hasFlag(flags: IFlagSet, flagKey: string) {
   return Object.prototype.hasOwnProperty.call(flags, flagKey);
 }
 
 function toFlagsProxy(
-  fbClient: FB,
-  bootstrapFlags: IFeatureFlagSet,
-  flags: IFeatureFlagSet,
+  fbClient: IFbClient,
+  bootstrapFlags: IFlagSet,
+  flags: IFlagSet,
   flagKeyMap: FlagKeyMap,
-  flagsWithRawFlagKeys: IFeatureFlagSet,
+  flagsWithRawFlagKeys: IFlagSet,
   useCamelCaseFlagKeys: boolean,
   sendEventsOnFlagRead: boolean
-): IFeatureFlagSet {
+): IFlagSet {
   return new Proxy(flags, {
     get: (target, prop, receiver) => {
       const currentValue = Reflect.get(target, prop, receiver) || flagsWithRawFlagKeys[prop as string]
@@ -68,7 +68,7 @@ function toFlagsProxy(
       }
 
       if (currentValue === undefined) {
-        return;
+        return undefined;
       }
 
       if (!sendEventsOnFlagRead) {

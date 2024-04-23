@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import context, { FbContext } from './context';
-import { IFeatureFlagSet } from "@featbit/js-client-sdk";
+import { IFlagSet } from "./types";
 
 /**
  * `useFlags` is a custom hook which returns all feature flags. It uses the `useContext` primitive
@@ -10,7 +10,7 @@ import { IFeatureFlagSet } from "@featbit/js-client-sdk";
  *
  * @return All the feature flags configured in FeatBit
  */
-const useFlags = <T extends IFeatureFlagSet = IFeatureFlagSet>(): T => {
+const useFlags = <T extends IFlagSet = IFlagSet>(): T => {
   const {flags} = useContext<FbContext>(context);
 
   return flags as T;

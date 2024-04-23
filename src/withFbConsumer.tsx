@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Consumer, FbContext } from './context';
-import { FB, IFeatureFlagSet } from '@featbit/js-client-sdk';
+import { IFbClient } from '@featbit/js-client-sdk';
+import { IFlagSet } from "./types";
 
 /**
  * Controls the props the wrapped component receives from the `FbConsumer` HOC.
@@ -21,12 +22,12 @@ export interface FbProps {
    * A map of feature flags from their keys to their values.
    * Keys are camelCased using `lodash.camelcase`.
    */
-  flags?: IFeatureFlagSet;
+  flags?: IFlagSet;
 
   /**
    * An instance of `FB` from the FeatBit JS Client SDK (`@featbit/js-client-sdk`)
    */
-  fbClient?: FB;
+  fbClient?: IFbClient;
 }
 
 /**

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@featbit/js-client-sdk": "^2.0.0",
+    "@featbit/js-client-sdk": "file:../../../featbit-js-client-sdk-v2",
     "@featbit/react-client-sdk": "file:../..",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
