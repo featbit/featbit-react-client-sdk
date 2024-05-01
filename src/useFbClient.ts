@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import context, { FbContext } from './context';
-import { IFbClient } from "../../featbit-js-client-sdk-v2";
+import { IFbClient } from "@featbit/js-client-sdk";
 
 // tslint:disable:max-line-length
 /**
