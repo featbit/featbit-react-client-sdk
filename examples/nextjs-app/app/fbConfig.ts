@@ -1,7 +1,6 @@
 
 // You can use this object to set the default values of the feature flags
-import { IFlagBase } from "@featbit/js-client-sdk";
-import { DataSyncModeEnum, VariationDataType } from "@featbit/react-client-sdk";
+import { DataSyncModeEnum, VariationDataType, IFlagBase } from "@featbit/react-client-sdk";
 
 const bootstrapFlags = [
   {

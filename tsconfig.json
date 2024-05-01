@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
+    "outDir": "dist",
     "target": "es5",
     "lib": ["es6", "esnext", "dom"],
     "module": "esnext",

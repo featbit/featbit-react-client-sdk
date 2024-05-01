@@ -2,13 +2,13 @@ import { VariationDataType } from "@featbit/js-client-sdk";
 
 export const userName = 'The user 01';
 
-// const sdkKey = 'Obg68EqYZk27JTxphPgy7At1aJ8GaAtEaIA1fb3IpuEA';
-// const streamingUri = 'wss://app-eval.featbit.co';
-// const eventsUri = 'https://app-eval.featbit.co';
+const sdkKey = 'Obg68EqYZk27JTxphPgy7At1aJ8GaAtEaIA1fb3IpuEA';
+const streamingUri = 'wss://app-eval.featbit.co';
+const eventsUri = 'https://app-eval.featbit.co';
 
-const sdkKey = 'x5-p4nMlW0aLyzE5TpTtmwwvvdZpVB4Ey-aNea3wffFw';
-const streamingUri = 'ws://localhost:5100';
-const eventsUri = 'http://localhost:5100';
+// const sdkKey = 'x5-p4nMlW0aLyzE5TpTtmwwvvdZpVB4Ey-aNea3wffFw';
+// const streamingUri = 'ws://localhost:5100';
+// const eventsUri = 'http://localhost:5100';
 
 const flags = [
     {

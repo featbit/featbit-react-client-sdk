@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@featbit/js-client-sdk": "file:../../../featbit-js-client-sdk-v2",
     "@featbit/react-client-sdk": "file:../../",
     "react": "^18",
     "react-dom": "^18",

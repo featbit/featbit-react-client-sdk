@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is the react client side SDK for the feature management platform [FeatBit](https://www.featbit.co).
+This is the React client side SDK for the feature management platform [FeatBit](https://www.featbit.co).
 
 Be aware, this is a client side SDK, it is intended for use in a single-user context, which can be mobile, desktop or embeded applications. This SDK can only be ran in a browser environment, it is not suitable for React Native projects, React Native SDK will be available in our other repo.
 
@@ -22,7 +22,6 @@ If you want to use the SDK in the server side, you should use [@featbit/node-ser
 ### Install
 
 ```
-npm install @featbit/js-client-sdk
 npm install @featbit/react-client-sdk
 ```
 
@@ -38,7 +37,7 @@ Follow the documentation below to retrieve these values
 ### Quick Start
 
 The following code demonstrates:
-1. Initialize the SDK with anonymous user
+1. Initialize the SDK
 2. Evaluate flag with userFlags hook
 
 ```javascript
@@ -68,9 +67,14 @@ function APP() {
 (async () => {
   const configWithAnonymousUser = {
     options: {
-      anonymous: true,
-      secret: 'YOUR ENVIRONMENT SECRET',
-      api: 'THE STREAMING URL'
+      user: {
+        name: 'the user name',
+        keyId: 'fb-demo-user-key',
+        customizedProperties: []
+      },
+      sdkKey: 'YOUR ENVIRONMENT SECRET',
+      streamingUrl: 'THE STREAMING URL',
+      eventsUrl: 'THE EVENTS URL'
     }
   };
   
@@ -102,24 +106,27 @@ function APP() {
 ### Initializing the SDK
 After you install the dependency, initialize the React SDK. You can do this in one of two ways:
 
-- Using the asyncWithFbProvider function
-- Using the withFbProvider function
+- Using the `asyncWithFbProvider` function
+- Using the `withFbProvider` function
 
 Both rely on React's Context API which lets you access your flags from any level of your component hierarchy.
 
 #### Initializing using asyncWithFbProvider
 
-The **asyncWithFbProvider** function initializes the React SDK and returns a provider which is a React component. It is an async function. It accepts a **ProviderConfig** object.
+The `asyncWithFbProvider` function initializes the React SDK and returns a provider which is a React component. It is an async function. It accepts a `ProviderConfig` object.
 
-**asyncWithFbProvider** cannot be deferred. You must initialize **asyncWithFbProvider** at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of the app.
+`asyncWithFbProvider` cannot be deferred. You must initialize `asyncWithFbProvider` at the app entry point prior to rendering to ensure flags and the client are ready at the beginning of the app.
 
 ```javascript
+import { createRoot } from 'react-dom/client';
 import { asyncWithFbProvider } from '@featbit/react-client-sdk';
 
 (async () => {
   const config = {
     options: {
-      secret: 'YOUR ENVIRONMENT SECRET',
+      sdkKey: 'YOUR ENVIRONMENT SECRET',
+      streamingUrl: 'THE STREAMING URL',
+      eventsUrl: 'THE EVENTS URL',
       user: {
         userName: 'USER NAME',
         id: 'USER ID',
@@ -154,14 +161,16 @@ The asyncWithFbProvider function uses the Hooks API, which requires React versio
 
 #### Initializing using withFbProvider
 
-The **withFbProvider** function initializes the React SDK and wraps your root component in a **Context.Provider**. It accepts a **ProviderConfig** object used to configure the React SDK.
+The `withFbProvider` function initializes the React SDK and wraps your root component in a **Context.Provider**. It accepts a `ProviderConfig` object used to configure the React SDK.
 
 ```javascript
 import { withFbProvider } from '@featbit/react-client-sdk';
 
 const config = {
   options: {
-    secret: 'YOUR ENVIRONMENT SECRET',
+    sdkKey: 'YOUR ENVIRONMENT SECRET',
+    streamingUrl: 'THE STREAMING URL',
+    eventsUrl: 'THE EVENTS URL',
     user: {
       userName: 'USER NAME',
       id: 'USER ID',
@@ -184,7 +193,7 @@ The React SDK automatically subscribes to flag change events. This is different 
 
 ### Configuring the React SDK
 
-The **ProviderConfig** object provides configuration to both **withFbProvider** and **asyncWithFbProvider** function.
+The `ProviderConfig` object provides configuration to both `withFbProvider` and `asyncWithFbProvider` function.
 
 The only mandatory property is the **options**, it is the config needed to initialize the `@featbit/js-client-sdk`. To know more details about the **options**, please refer to [@featbit/js-client-sdk](https://github.com/featbit/featbit-js-client-sdk). All other properties are React SDK related.
 
@@ -206,7 +215,9 @@ The following is an example ProviderConfig object including each of the above pr
 ```javascript
 {
   options: {
-    secret: 'YOUR ENVIRONMENT SECRET',
+    sdkKey: 'YOUR ENVIRONMENT SECRET',
+    streamingUrl: 'THE STREAMING URL',
+    eventsUrl: 'THE EVENTS URL',
     user: {
       userName: 'USER NAME',
       id: 'USER ID',
@@ -264,18 +275,18 @@ The return value of withFbConsumer is a wrapper function that takes your compone
 import { withFbConsumer } from '@featbit/react-client-sdk';
 
 class MyComponent extends React.Component {
-    render() {
-      const { flags } = this.props;
+  render() {
+    const { flags } = this.props;
 
-      return (
-        <div>
-          <div>{flags.flag1}</div>
-        </div>
-      );
-    }
+    return (
+      <div>
+        <div>{flags.flag1}</div>
+      </div>
+    );
   }
+}
 
-  export default withFbConsumer()(Board)
+export default withFbConsumer()(Board)
 ```
 
 #### Consuming flags in function component
@@ -299,9 +310,9 @@ export default withFbConsumer()(Home);
 
 ##### Using Hooks
 
-The React SDK offers two custom hooks which you can use as an alternative to **withFbConsumer**: 
-- useFlags
-- useFbClient.
+The React SDK offers two custom hooks which you can use as an alternative to `withFbConsumer`: 
+- `useFlags`
+- `useFbClient`
 
 > These functions require React 16.8.0 or later  
 useFlags and useFbClient use the Hooks API, which requires React version 16.8.0 or later.
@@ -316,19 +327,19 @@ Here is an example of how to use those two hooks:
 import { useFlags, useFbClient } from '@featbit/react-client-sdk';
 
 const MyComponent = props => {
-    const fbClient = useFbClient();
+  const fbClient = useFbClient();
 
-    const { flag1, flag2 } = useFlags();
-    // or use
-    const flags = useFlags();
-    // then use flags.flag1 or flags['flag1'] to reference the flag1 feature flag
-    
-    return (
-        <div>
-            <div>1: {flag1}</div>
-            <div>2: {flag2}</div>
-        </div>
-    );
+  const { flag1, flag2 } = useFlags();
+  // or use
+  const flags = useFlags();
+  // then use flags.flag1 or flags['flag1'] to reference the flag1 feature flag
+  
+  return (
+    <div>
+      <div>1: {flag1}</div>
+      <div>2: {flag2}</div>
+    </div>
+  );
 };
 
 
@@ -378,9 +389,9 @@ const LoginComponent = () => {
   }
     
   return (
-      <div>
-        <button onClick={handleLogin}>Login</button>
-      </div>
+    <div>
+      <button onClick={handleLogin}>Login</button>
+    </div>
   );
 }
 
@@ -393,16 +404,16 @@ If a flag is not available from the SDK, the SDK uses the default value you prov
 
 ```javascript
 options: {
-    bootstrap: [
-      { 
-          "id": "my-flag",
-          "variation": "on"
-      },
-      {
-        "id": "second-flag",
-        "variation": "AlphaGo"
-      }
-    ]
+  bootstrap: [
+    { 
+        "id": "my-flag",
+        "variation": "on"
+    },
+    {
+      "id": "second-flag",
+      "variation": "AlphaGo"
+    }
+  ]
 }
 ```
 
