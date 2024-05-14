@@ -1,6 +1,6 @@
 {
   "name": "@featbit/react-client-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "FeatBit client SDK for React",
   "keywords": [
     "FeatBit",
@@ -16,6 +16,7 @@
   "homepage": "https://github.com/featbit/featbit-react-client-sdk",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "files": [
     "dist",
     "src"
