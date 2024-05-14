@@ -8,7 +8,7 @@ This project uses the **Pages**, for example using **App Router**, please refer 
 This example used `withFfcProvider` function to initialize the SDK.
 
 > Important
-> In your project, you would need to add `@featbit/react-client-sdk` to the `transpileModules` list in the [next.config.mjs](next.config.mjs) file.
+> In your project, you would need to add `@featbit/react-client-sdk` to the `transpilePackages` list in the [next.config.mjs](next.config.mjs) file.
 
 # Rune the example
 
@@ -24,6 +24,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ![Demo](./public/demo.gif)
 
 # Explications
-- next.config.mjs: add `@featbit/react-client-sdk` to the `transpileModules` list
+- next.config.mjs: add `@featbit/react-client-sdk` to the `transpilePackages` list
 - FeatBitProvider.tsx: create a wrapper component to provide the context to descendant components, it is used in the `layout.tsx` file
 - test-component.tsx: a client component that consumes the fbClient and flags
