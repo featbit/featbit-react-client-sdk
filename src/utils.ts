@@ -32,8 +32,10 @@ export const fetchFlags = async (
   fbClient: IFbClient
 ) => {
   const evalDetails: IEvalDetail<string>[] = await fbClient.getAllVariations();
-
-  return evalDetails.map(({flagKey, value}) => ({[flagKey]: value}));
+  return evalDetails.reduce((acc, {flagKey, value}) => {
+    acc[flagKey] = value;
+    return acc;
+  }, {} as IFlagSet);
 };
 
 export default {camelCaseKeys, fetchFlags};
