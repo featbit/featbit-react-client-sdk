@@ -53,7 +53,7 @@ function Game() {
 }
 
 function APP() {
-  const { flags } = useFlags();
+  const flags = useFlags();
 
   const gameEnabled = flags['game-enabled'];
 
