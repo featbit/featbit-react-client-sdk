@@ -83,14 +83,14 @@ class FbProvider extends React.Component<ProviderConfig, FbHocState> implements 
   };
 
   init = async () => {
-    const {options} = this.props;
+    const {options, platform} = this.props;
     let client: IFbClient = this.props.fbClient!;
     const reactOptions = this.getReactOptions();
     let unproxiedFlags;
     if (client) {
       unproxiedFlags = await fetchFlags(client);
     } else {
-      const initialisedOutput = await initClient(reactOptions, options);
+      const initialisedOutput = await initClient(reactOptions, options, platform);
       unproxiedFlags = initialisedOutput.flags;
       client = initialisedOutput.fbClient!;
     }

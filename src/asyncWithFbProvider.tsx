@@ -29,9 +29,9 @@ import getFlagsProxy from "./getFlagsProxy";
  * @param config - The configuration used to initialize FeatBit's JS SDK
  */
 export default async function asyncWithFbProvider(config: ProviderConfig) {
-  const {options, reactOptions: userReactOptions} = config;
+  const {options, reactOptions: userReactOptions, platform} = config;
   const reactOptions = {...defaultReactOptions, ...userReactOptions};
-  const { flags: fetchedFlags, fbClient} = await initClient(reactOptions, options);
+  const { flags: fetchedFlags, fbClient} = await initClient(reactOptions, options, platform);
 
   const bootstrapFlags = (options?.bootstrap || []).reduce((acc: {[key: string]: string}, flag: any) => {
     acc[flag.id] = flag.variation;

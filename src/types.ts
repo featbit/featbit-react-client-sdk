@@ -1,4 +1,4 @@
-import { IFbClient, IOptions, FlagValue } from '@featbit/js-client-sdk';
+import { IFbClient, IOptions, FlagValue, IPlatform } from '@featbit/js-client-sdk';
 
 export interface IFlagSet {
   [key: string]: FlagValue;
@@ -61,6 +61,8 @@ export interface ProviderConfig {
    * event, to ensure that the flags are properly set.
    */
   fbClient?: IFbClient;
+
+  platform?: IPlatform;
 }
 
 /**
