@@ -4,7 +4,8 @@
 
 This is the React client side SDK for the feature management platform [FeatBit](https://www.featbit.co).
 
-Be aware, this is a client side SDK, it is intended for use in a single-user context, which can be mobile, desktop or embeded applications. This SDK can only be ran in a browser environment, it is not suitable for React Native projects, React Native SDK will be available in our other repo.
+Be aware, this is a client side SDK, it is intended for use in a single-user context, which can be mobile, desktop or embeded applications. This SDK can only be ran in a browser environment, it is not suitable for React Native projects.
+If you are looking for React Native SDK, please check this [React Native SDK](https://github.com/featbit/featbit-react-native-sdk).
 
 > The React SDK is based on the JavaScript SDK  
 The React SDK builds on FeatBit's JavaScript SDK to provide a better integration for use in React applications. As a result, much of the JavaScript SDK functionality is also available for the React SDK to use. 
