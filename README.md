@@ -1,4 +1,4 @@
-# Featbit Client-Side SDK for ReactJS
+# FeatBit Client-Side SDK for ReactJS
 
 ## Introduction
 
