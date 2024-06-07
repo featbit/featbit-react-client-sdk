@@ -31,6 +31,7 @@ export const fbConfig = {
     eventsUri: 'https://app-eval.featbit.co',
     sdkKey: 'Obg68EqYZk27JTxphPgy7At1aJ8GaAtEaIA1fb3IpuEA',
     bootstrap: bootstrapFlags,
+    startWaitTime: 5000
   },
   reactOptions: {
     useCamelCaseFlagKeys: true, // default is false

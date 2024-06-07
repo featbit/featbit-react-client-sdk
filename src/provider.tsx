@@ -1,14 +1,11 @@
-import React from "react";
+import React, { Component, PropsWithChildren }  from "react";
 import { EnhancedComponent, ProviderConfig, defaultReactOptions, IFlagSet } from './types';
-import { Provider, FbContext } from './context';
+import { Provider } from './context';
 import { camelCaseKeys, fetchFlags } from "./utils";
-import { initClient } from './initClient';
-import { IFbClient } from '@featbit/js-client-sdk';
+import { FbClientBuilder, IFbClient } from '@featbit/js-client-sdk';
 import getFlagsProxy from "./getFlagsProxy";
+import { ProviderState } from "./providerState";
 
-interface FbHocState extends FbContext {
-  unproxiedFlags: IFlagSet;
-}
 
 /**
  * The `FbProvider` is a component which accepts a config object which is used to
@@ -27,8 +24,8 @@ interface FbHocState extends FbContext {
  * within your application. This provider is used inside the `withFbProviderHOC` and can be used instead to initialize
  * the `@featbit/js-client-sdk`. For async initialization, check out the `asyncWithFbProvider` function
  */
-class FbProvider extends React.Component<ProviderConfig, FbHocState> implements EnhancedComponent {
-  readonly state: Readonly<FbHocState>;
+class FbProvider extends Component<PropsWithChildren<ProviderConfig>, ProviderState> implements EnhancedComponent {
+  readonly state: Readonly<ProviderState>;
   bootstrapFlags: IFlagSet;
 
   constructor(props: ProviderConfig) {
@@ -38,7 +35,7 @@ class FbProvider extends React.Component<ProviderConfig, FbHocState> implements 
     this.bootstrapFlags = (options?.bootstrap || []).reduce((acc: {[key: string]: string}, flag: any) => {
       acc[flag.id] = flag.variation;
       return acc;
-    }, {} as {[key: string]: string});;
+    }, {} as {[key: string]: string});
 
     this.state = {
       flags: {},
@@ -74,32 +71,63 @@ class FbProvider extends React.Component<ProviderConfig, FbHocState> implements 
       };
 
       if (Object.keys(updates).length > 0) {
-        this.setState({
+        this.setState((prevState) =>({
+          ...prevState,
           unproxiedFlags,
           ...getFlagsProxy(fbClient, this.bootstrapFlags, unproxiedFlags, this.getReactOptions())
-        })
+        }))
       }
     });
   };
 
-  init = async () => {
+  onFailed = (fbClient: IFbClient, e: Error) => {
+    this.setState((prevState) => ({ ...prevState, error: e }));
+  };
+
+  onReady = async (fbClient: IFbClient, reactOptions: any) => {
+    const unproxiedFlags = await fetchFlags(fbClient);
+    this.setState((prevState) => ({
+      ...prevState,
+      unproxiedFlags,
+      ...getFlagsProxy(fbClient, this.bootstrapFlags, unproxiedFlags, reactOptions)}));
+  };
+
+  prepareFbClient = async () => {
     const {options, platform} = this.props;
     let client: IFbClient = this.props.fbClient!;
     const reactOptions = this.getReactOptions();
-    let unproxiedFlags;
+    let unproxiedFlags = this.state.unproxiedFlags;
+    let error: Error;
+
     if (client) {
       unproxiedFlags = await fetchFlags(client);
     } else {
-      const initialisedOutput = await initClient(reactOptions, options, platform);
-      unproxiedFlags = initialisedOutput.flags;
-      client = initialisedOutput.fbClient!;
+      client = new FbClientBuilder({...options})
+        .platform(platform)
+        .build();
+
+      try {
+        await client.waitForInitialization();
+        unproxiedFlags = await fetchFlags(client);
+      } catch (e) {
+        error = e as Error;
+
+        if (error?.name.toLowerCase().includes('timeout')) {
+          client.on('failed', this.onFailed);
+          client.on('ready', () => {
+            this.onReady(client, reactOptions);
+          });
+        }
+      }
     }
 
-    this.setState({
+    this.setState((previousState) => ({
+      ...previousState,
       unproxiedFlags,
       ...getFlagsProxy(client, this.bootstrapFlags, unproxiedFlags, reactOptions),
-      fbClient: client
-    });
+      fbClient: client,
+      error,
+    }));
 
     this.subscribeToChanges(client);
   };
@@ -110,26 +138,26 @@ class FbProvider extends React.Component<ProviderConfig, FbHocState> implements 
       return;
     }
 
-    await this.init();
+    await this.prepareFbClient();
   }
 
   async componentDidUpdate(prevProps: ProviderConfig) {
     const {options, deferInitialization} = this.props;
     const userJustLoaded = !prevProps.options?.user && options?.user;
     if (deferInitialization && userJustLoaded) {
-      await this.init();
+      await this.prepareFbClient();
     }
   }
 
   render() {
-    const {flags, flagKeyMap, fbClient} = this.state;
+    const {flags, flagKeyMap, fbClient, error} = this.state;
 
     // Conditional rendering when fbClient is null
     if (fbClient === undefined) {
       return null; // or Loading Indicator or any other placeholder
     }
 
-    return <Provider value={{ flags, flagKeyMap, fbClient }}>{ this.props.children }</Provider>;
+    return <Provider value={{ flags, flagKeyMap, fbClient, error }}>{ this.props.children }</Provider>;
   }
 }
 

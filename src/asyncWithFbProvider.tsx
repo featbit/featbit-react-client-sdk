@@ -3,6 +3,8 @@ import { ProviderConfig, defaultReactOptions, IFlagSet } from './types';
 import { Provider } from './context';
 import { initClient } from './initClient';
 import getFlagsProxy from "./getFlagsProxy";
+import { FbClientBuilder } from "@featbit/js-client-sdk";
+import { fetchFlags } from "./utils";
 
 /**
  * This is an async function which initializes feature-flags.co's JS SDK (`@featbit/js-client-sdk`)
@@ -31,7 +33,19 @@ import getFlagsProxy from "./getFlagsProxy";
 export default async function asyncWithFbProvider(config: ProviderConfig) {
   const {options, reactOptions: userReactOptions, platform} = config;
   const reactOptions = {...defaultReactOptions, ...userReactOptions};
-  const { flags: fetchedFlags, fbClient} = await initClient(reactOptions, options, platform);
+  let error: Error;
+  let fetchedFlags: IFlagSet = {};
+
+  const fbClient = new FbClientBuilder({...options})
+    .platform(platform)
+    .build();
+
+  try {
+    await fbClient.waitForInitialization();
+    fetchedFlags = await fetchFlags(fbClient);
+  } catch (e) {
+    error = e as Error;
+  }
 
   const bootstrapFlags = (options?.bootstrap || []).reduce((acc: {[key: string]: string}, flag: any) => {
     acc[flag.id] = flag.variation;
@@ -41,31 +55,63 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
   const FbProvider = ({children}: { children: ReactNode }) => {
     const [state, setState] = useState(() => ({
       unproxiedFlags: fetchedFlags,
-      ...getFlagsProxy(fbClient, bootstrapFlags, fetchedFlags, reactOptions)
+      ...getFlagsProxy(fbClient, bootstrapFlags, fetchedFlags, reactOptions),
+      fbClient,
+      error,
     }));
 
     useEffect(() => {
-      fbClient.on('update', (changedKeys: string[]) => {
+      async function onReady() {
+        const unproxiedFlags = await fetchFlags(fbClient);
+        setState((prevState) => ({
+          ...prevState,
+          unproxiedFlags,
+          ...getFlagsProxy(fbClient, bootstrapFlags, unproxiedFlags, reactOptions)}));
+      }
+
+      function onFailed(e: Error) {
+        setState((prevState) => ({ ...prevState, error: e }));
+      }
+
+      function onUpdate(changedKeys: string[]) {
         const updates: IFlagSet = changedKeys.reduce(async (acc, key) => {
           acc[key] = await fbClient.variation(key, '');
           return acc;
         }, {} as IFlagSet);
 
         if (Object.keys(updates).length > 0) {
-          setState(({ unproxiedFlags }) => {
-            const updatedUnproxiedFlags = { ...unproxiedFlags, ...updates };
+          setState((prevState) => {
+            const updatedUnproxiedFlags = { ...prevState.unproxiedFlags, ...updates };
 
             return {
+              ...prevState,
               unproxiedFlags: updatedUnproxiedFlags,
               ...getFlagsProxy(fbClient, bootstrapFlags, updatedUnproxiedFlags, reactOptions),
             };
           });
         }
-      });
+      }
+
+      fbClient.on('update', onUpdate);
+
+      // Only subscribe to ready and failed if waitForInitialization timed out
+      // because we want the introduction of init timeout to be as minimal and backwards
+      // compatible as possible.
+      if (error?.name.toLowerCase().includes('timeout')) {
+        fbClient.on('failed', onFailed);
+        fbClient.on('ready', onReady);
+      }
+
+      return function cleanup() {
+        fbClient.off('update', onUpdate);
+        fbClient.off('failed', onFailed);
+        fbClient.off('ready', onReady);
+      };
+
     }, []);
 
-    const { flags, flagKeyMap } = state;
-    return <Provider value={{ flags, flagKeyMap, fbClient }}>{ children }</Provider>;
+    const { unproxiedFlags: _, ...rest }  = state;
+    return <Provider value={rest}>{ children }</Provider>;
   };
 
   return FbProvider;

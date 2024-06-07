@@ -10,7 +10,12 @@ interface FbContext {
    */
   flagKeyMap: FlagKeyMap;
 
-  fbClient?: IFbClient
+  fbClient?: IFbClient,
+
+  /**
+   * FeatBit client initialization error, if there was one.
+   */
+  error?: Error,
 }
 
 const context = createContext<FbContext>({flags: {}, flagKeyMap: {}, fbClient: undefined});
