@@ -1,6 +1,6 @@
 {
   "name": "@featbit/react-client-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "FeatBit client SDK for React",
   "keywords": [
     "FeatBit",

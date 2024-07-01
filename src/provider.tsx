@@ -152,11 +152,6 @@ class FbProvider extends Component<PropsWithChildren<ProviderConfig>, ProviderSt
   render() {
     const {flags, flagKeyMap, fbClient, error} = this.state;
 
-    // Conditional rendering when fbClient is null
-    if (fbClient === undefined) {
-      return null; // or Loading Indicator or any other placeholder
-    }
-
     return <Provider value={{ flags, flagKeyMap, fbClient, error }}>{ this.props.children }</Provider>;
   }
 }
