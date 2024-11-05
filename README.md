@@ -99,7 +99,7 @@ function APP() {
 ```
 
 ## Examples
-- [React APP](./examples/react-app)
+- [React APP](./examples/react-app-old)
 - [Next.js APP](./examples/nextjs-app)
 
 ## SDK

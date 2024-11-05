@@ -1,4 +1,4 @@
-import Square from './square';
+import Square from './square.jsx';
 import React from 'react';
 import { withFbConsumer } from '@featbit/react-client-sdk';
 

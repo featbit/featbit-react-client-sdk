@@ -1,4 +1,3 @@
-
 import { useFlags } from '@featbit/react-client-sdk';
 
 const UserInfo = props => {
