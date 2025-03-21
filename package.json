@@ -1,6 +1,6 @@
 {
   "name": "@featbit/react-client-sdk",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "FeatBit client SDK for React",
   "keywords": [
     "FeatBit",
@@ -47,7 +47,7 @@
     "typescript": "^4.5.3"
   },
   "dependencies": {
-    "@featbit/js-client-sdk": "^3.0.6",
+    "@featbit/js-client-sdk": "^3.0.10",
     "hoist-non-react-statics": "^3.3.2",
     "lodash.camelcase": "^4.3.0"
   },
