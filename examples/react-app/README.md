@@ -19,7 +19,7 @@ Go to the bottom of each file and follow the instructions there to switch betwee
 To learn the difference between the two initialization methods, please read [Initializing the SDK](https://github.com/featbit/featbit-react-client-sdk#initializing-the-sdk)
 
 # Run the example
-Run the following commands, then the App should be available at http://localhost:3000
+Run the following commands, then the App should be available at http://localhost:5173
 
 ```bash
 npm install
