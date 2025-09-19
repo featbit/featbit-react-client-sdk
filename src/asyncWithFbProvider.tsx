@@ -74,8 +74,8 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
       }
 
       function onUpdate(changedKeys: string[]) {
-        const updates: IFlagSet = changedKeys.reduce(async (acc, key) => {
-          acc[key] = await fbClient.variation(key, '');
+        const updates: IFlagSet = changedKeys.reduce((acc, key) => {
+          acc[key] = fbClient.variation(key, '');
           return acc;
         }, {} as IFlagSet);
 
