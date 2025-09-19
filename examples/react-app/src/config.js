@@ -2,7 +2,7 @@ import { VariationDataType } from "@featbit/js-client-sdk";
 
 export const userName = 'The user 01';
 
-const sdkKey = 'DzYExXybMEiBU7IfzA7tpgR7O1YG7QP02zTZSbO7EWiA';
+const sdkKey = '3QFLBQibTE6i1duL1WAK2A227SK-9N8k-9VqurJDE_Qw';
 const streamingUri = 'wss://app-eval.featbit.co';
 const eventsUri = 'https://app-eval.featbit.co';
 
@@ -38,7 +38,7 @@ export const configWithUser = {
     options: {
         user: {
             name: userName,
-            keyId: 'fb-demo-' + userName,
+            keyId: 'fb-demo-' + userName.replace(/\s/g, '-'),
             customizedProperties: []
         },
         ...configBase.options

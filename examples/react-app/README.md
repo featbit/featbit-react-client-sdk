@@ -12,8 +12,8 @@ Both rely on React's Context API which lets you access your flags from any level
 
 To switching between the two ways, you need to modify two files:
 
-- game.js
-- index.js
+- game.jsx
+- main.jsx
 
 Go to the bottom of each file and follow the instructions there to switch between the two ways.  
 To learn the difference between the two initialization methods, please read [Initializing the SDK](https://github.com/featbit/featbit-react-client-sdk#initializing-the-sdk)

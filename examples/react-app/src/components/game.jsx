@@ -157,7 +157,7 @@ function calculateWinner(squares) {
 }
 
 // Uncomment the following line to use withFbProvider
-export default withFbProvider(configWithUser)(Game);
+//export default withFbProvider(configWithUser)(Game);
 
 // Uncommennt the following line to use asyncWithFbProvider
-//export default Game;
+export default Game;
