@@ -29,7 +29,7 @@ export const fbConfig = {
     },
     streamingUri: 'wss://app-eval.featbit.co',
     eventsUri: 'https://app-eval.featbit.co',
-    sdkKey: 'Obg68EqYZk27JTxphPgy7At1aJ8GaAtEaIA1fb3IpuEA',
+    sdkKey: '3QFLBQibTE6i1duL1WAK2A227SK-9N8k-9VqurJDE_Qw',
     bootstrap: bootstrapFlags,
     startWaitTime: 5000
   },
@@ -51,7 +51,7 @@ export const fbConfigWithPolling = {
     pollingUri: 'http://localhost:5100',
     dataSyncMode: DataSyncModeEnum.POLLING,
     sdkKey: 'YOUR_SDK_KEY_HERE',
-    bootstrap: bootstrapFlags,
+    //bootstrap: bootstrapFlags,
   },
   reactOptions: {
     useCamelCaseFlagKeys: true, // default is false
