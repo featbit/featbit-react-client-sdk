@@ -1,4 +1,4 @@
-import { VariationDataType } from "@featbit/js-client-sdk";
+import {BasicLogger, VariationDataType} from "@featbit/js-client-sdk";
 
 export const userName = 'The user 01';
 
@@ -21,12 +21,20 @@ const flags = [
     }
 ];
 
+const myLogger = new BasicLogger({
+    level: "debug",
+    destination: console.log
+});
+
+
 const configBase = {
     options: {
         sdkKey,
         streamingUri,
         eventsUri,
-        bootstrap: flags
+        bootstrap: flags,
+        logLevel: 'debug',
+        //logger: myLogger,
     },
     reactOptions: {
         useCamelCaseFlagKeys: true,
