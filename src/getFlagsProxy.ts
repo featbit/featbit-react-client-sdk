@@ -1,18 +1,18 @@
 import { defaultReactOptions, FbReactOptions, FlagKeyMap, IFlagSet } from "./types";
-import { IFbClient } from "@featbit/js-client-sdk";
+import { IConvertResult, IFbClient, IFlagBase, ValueConverters, VariationDataType } from "@featbit/js-client-sdk";
 import camelCase from "lodash.camelcase";
 
 export default function getFlagsProxy(
-  fbClient: IFbClient,
-  bootstrapFlags: IFlagSet,
   fetchedFlags: IFlagSet,
+  bootstrapFlags?: IFlagBase[],
+  fbClient?: IFbClient,
   reactOptions: FbReactOptions = defaultReactOptions
 ): { flags: IFlagSet; flagKeyMap: FlagKeyMap } {
-  const { useCamelCaseFlagKeys = false, sendEventsOnFlagRead = true } = reactOptions;
+  const { useCamelCaseFlagKeys = false } = reactOptions;
   const [flags, flagKeyMap = {}] = useCamelCaseFlagKeys ? getCamelizedKeysAndFlagMap(fetchedFlags) : [fetchedFlags];
 
   return {
-    flags: toFlagsProxy(fbClient, bootstrapFlags, flags, flagKeyMap, fetchedFlags, useCamelCaseFlagKeys, sendEventsOnFlagRead),
+    flags: toFlagsProxy(flags, flagKeyMap, fetchedFlags, useCamelCaseFlagKeys, bootstrapFlags, fbClient),
     flagKeyMap,
   };
 }
@@ -33,50 +33,60 @@ function getCamelizedKeysAndFlagMap(rawFlags: IFlagSet) {
   return [flags, flagKeyMap];
 }
 
-function hasFlag(flags: IFlagSet, flagKey: string) {
-  return Object.prototype.hasOwnProperty.call(flags, flagKey);
-}
-
 function toFlagsProxy(
-  fbClient: IFbClient,
-  bootstrapFlags: IFlagSet,
   flags: IFlagSet,
   flagKeyMap: FlagKeyMap,
   flagsWithRawFlagKeys: IFlagSet,
   useCamelCaseFlagKeys: boolean,
-  sendEventsOnFlagRead: boolean
+  bootstrapFlags?: IFlagBase[],
+  fbClient?: IFbClient,
 ): IFlagSet {
+  const bootstrapFlagDict = (bootstrapFlags || []).reduce((acc: {[key: string]: IFlagBase}, flag: any) => {
+    acc[flag.id] = flag;
+    return acc;
+  }, {} as {[key: string]: IFlagBase});
+
   return new Proxy(flags, {
     get: (target, prop, receiver) => {
       const currentValue = Reflect.get(target, prop, receiver) || flagsWithRawFlagKeys[prop as string]
 
-      // check if flag key exists as camelCase or original case
-      const validFlagKey =
-        hasFlag(flagKeyMap, prop as string) || hasFlag(target, prop as string) || hasFlag(flagsWithRawFlagKeys, prop as string);
-
-      if (!validFlagKey && hasFlag(bootstrapFlags, prop as string)) {
-        return bootstrapFlags[prop as string];
-      }
-
       // only process flag keys and ignore symbols and native Object functions
-      if (typeof prop === 'symbol' || !validFlagKey) {
-        return currentValue;
-      }
-
-      if (useCamelCaseFlagKeys && prop !== camelCase(prop as string)) {
-        console.warn(`You're attempting to access a flag with its original keyId: ${prop as string}, even though useCamelCaseFlagKeys is set to true.`);
-      }
-
-      if (currentValue === undefined) {
+      if (typeof prop === 'symbol') {
         return undefined;
       }
 
-      if (!sendEventsOnFlagRead) {
-        return currentValue;
+      if (fbClient && useCamelCaseFlagKeys && prop !== camelCase(prop as string)) {
+        fbClient.logger?.warn(`You're attempting to access a flag with its original keyId: ${prop as string}, even though useCamelCaseFlagKeys is set to true.`);
       }
 
       const pristineFlagKey = useCamelCaseFlagKeys ? (flagKeyMap[prop] || prop) : prop;
-      return fbClient.variation(pristineFlagKey, currentValue);
+      if (fbClient) {
+        return fbClient.variation(pristineFlagKey, currentValue);
+      }
+
+      if (!currentValue) {
+        return undefined;
+      }
+
+      let converter: (value: string) => IConvertResult<any>;
+      switch (bootstrapFlagDict[pristineFlagKey]?.variationType) {
+        case VariationDataType.boolean:
+          converter = ValueConverters.bool;
+          break;
+        case VariationDataType.number:
+          converter = ValueConverters.number;
+          break;
+        case VariationDataType.json:
+          converter = ValueConverters.json;
+          break;
+        case VariationDataType.string:
+          converter = ValueConverters.string;
+          break;
+        default:
+          converter = ValueConverters.string;
+      }
+
+      return converter(currentValue)?.value;
     },
   });
 }

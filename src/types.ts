@@ -19,13 +19,6 @@ export interface FbReactOptions {
    * This is false by default, if set to true, keys will automatically be converted to camel-case.
    */
   useCamelCaseFlagKeys?: boolean;
-
-  /**
-   * Whether to send flag evaluation events when a flag is read from the `flags` object
-   * returned by the `useFlags` hook. This is true by default, meaning flag evaluation
-   * events will be sent by default.
-   */
-  sendEventsOnFlagRead?: boolean;
 }
 
 /**

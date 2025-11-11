@@ -1,7 +1,6 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import { ProviderConfig, defaultReactOptions, IFlagSet } from './types';
 import { Provider } from './context';
-import { initClient } from './initClient';
 import getFlagsProxy from "./getFlagsProxy";
 import { FbClientBuilder } from "@featbit/js-client-sdk";
 import { fetchFlags } from "./utils";
@@ -47,15 +46,10 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
     error = e as Error;
   }
 
-  const bootstrapFlags = (options?.bootstrap || []).reduce((acc: {[key: string]: string}, flag: any) => {
-    acc[flag.id] = flag.variation;
-    return acc;
-  }, {} as {[key: string]: string});
-
   const FbProvider = ({children}: { children: ReactNode }) => {
     const [state, setState] = useState(() => ({
       unproxiedFlags: fetchedFlags,
-      ...getFlagsProxy(fbClient, bootstrapFlags, fetchedFlags, reactOptions),
+      ...getFlagsProxy(fetchedFlags, undefined, fbClient, reactOptions),
       fbClient,
       error,
     }));
@@ -66,7 +60,7 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
         setState((prevState) => ({
           ...prevState,
           unproxiedFlags,
-          ...getFlagsProxy(fbClient, bootstrapFlags, unproxiedFlags, reactOptions)}));
+          ...getFlagsProxy(unproxiedFlags, undefined, fbClient, reactOptions)}));
       }
 
       function onFailed(e: Error) {
@@ -86,7 +80,7 @@ export default async function asyncWithFbProvider(config: ProviderConfig) {
             return {
               ...prevState,
               unproxiedFlags: updatedUnproxiedFlags,
-              ...getFlagsProxy(fbClient, bootstrapFlags, updatedUnproxiedFlags, reactOptions),
+              ...getFlagsProxy(updatedUnproxiedFlags, undefined, fbClient, reactOptions),
             };
           });
         }

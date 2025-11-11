@@ -5,6 +5,7 @@ import { camelCaseKeys, fetchFlags } from "./utils";
 import { FbClientBuilder, IFbClient } from '@featbit/js-client-sdk';
 import getFlagsProxy from "./getFlagsProxy";
 import { ProviderState } from "./providerState";
+import { IFlagBase } from "@featbit/js-client-sdk/dist/esm/evaluation";
 
 
 /**
@@ -26,16 +27,13 @@ import { ProviderState } from "./providerState";
  */
 class FbProvider extends Component<PropsWithChildren<ProviderConfig>, ProviderState> implements EnhancedComponent {
   readonly state: Readonly<ProviderState>;
-  bootstrapFlags: IFlagSet;
+  bootstrapFlags?: IFlagBase[];
 
   constructor(props: ProviderConfig) {
     super(props);
 
     const {options} = props;
-    this.bootstrapFlags = (options?.bootstrap || []).reduce((acc: {[key: string]: string}, flag: any) => {
-      acc[flag.id] = flag.variation;
-      return acc;
-    }, {} as {[key: string]: string});
+
 
     this.state = {
       flags: {},
@@ -45,12 +43,20 @@ class FbProvider extends Component<PropsWithChildren<ProviderConfig>, ProviderSt
     };
 
     if (options?.bootstrap && options?.bootstrap.length > 0) {
-      const {useCamelCaseFlagKeys} = this.getReactOptions();
-      const flags = useCamelCaseFlagKeys ? camelCaseKeys(this.bootstrapFlags) : this.bootstrapFlags;
+      const reactOptions = this.getReactOptions();
+      this.bootstrapFlags = options.bootstrap;
+
+      const bootstrapFlagKeyValues = (options?.bootstrap || []).reduce((acc: {[key: string]: string}, flag: any) => {
+        acc[flag.id] = flag.variation;
+        return acc;
+      }, {} as {[key: string]: string});
+
+      const flags = reactOptions.useCamelCaseFlagKeys ? camelCaseKeys(bootstrapFlagKeyValues) : bootstrapFlagKeyValues;
       this.state = {
-        flags,
         unproxiedFlags: flags,
-        flagKeyMap: {},
+        ...getFlagsProxy(bootstrapFlagKeyValues, this.bootstrapFlags, undefined, reactOptions),
+        //flags,
+        //flagKeyMap: {},
         fbClient: undefined,
       };
     }
@@ -74,7 +80,7 @@ class FbProvider extends Component<PropsWithChildren<ProviderConfig>, ProviderSt
         this.setState((prevState) =>({
           ...prevState,
           unproxiedFlags,
-          ...getFlagsProxy(fbClient, this.bootstrapFlags, unproxiedFlags, this.getReactOptions())
+          ...getFlagsProxy(unproxiedFlags, this.bootstrapFlags, fbClient, this.getReactOptions())
         }))
       }
     });
@@ -89,7 +95,7 @@ class FbProvider extends Component<PropsWithChildren<ProviderConfig>, ProviderSt
     this.setState((prevState) => ({
       ...prevState,
       unproxiedFlags,
-      ...getFlagsProxy(fbClient, this.bootstrapFlags, unproxiedFlags, reactOptions)}));
+      ...getFlagsProxy(unproxiedFlags, this.bootstrapFlags, fbClient, reactOptions)}));
   };
 
   prepareFbClient = async () => {
@@ -110,6 +116,7 @@ class FbProvider extends Component<PropsWithChildren<ProviderConfig>, ProviderSt
         await client.waitForInitialization();
         unproxiedFlags = await fetchFlags(client);
       } catch (e) {
+        unproxiedFlags = await fetchFlags(client);
         error = e as Error;
 
         if (error?.name.toLowerCase().includes('timeout')) {
@@ -124,7 +131,7 @@ class FbProvider extends Component<PropsWithChildren<ProviderConfig>, ProviderSt
     this.setState((previousState) => ({
       ...previousState,
       unproxiedFlags,
-      ...getFlagsProxy(client, this.bootstrapFlags, unproxiedFlags, reactOptions),
+      ...getFlagsProxy(unproxiedFlags, this.bootstrapFlags, client, reactOptions),
       fbClient: client,
       error,
     }));
