@@ -6,14 +6,14 @@ import {configWithUser} from "./config.js";
 import {asyncWithFbProvider} from "@featbit/react-client-sdk";
 
 // Uncomment the following block to use asyncWithFbProvider
-const FbProvider = await asyncWithFbProvider(configWithUser);
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-      <FbProvider>
-          <App />
-      </FbProvider>
-  </StrictMode>,
-)
+// const FbProvider = await asyncWithFbProvider(configWithUser);
+// createRoot(document.getElementById('root')).render(
+//   <StrictMode>
+//       <FbProvider>
+//           <App />
+//       </FbProvider>
+//   </StrictMode>,
+// )
 
 // Uncomment the following block to use withFbProvider
 // createRoot(document.getElementById('root')).render(
@@ -21,3 +21,8 @@ createRoot(document.getElementById('root')).render(
 //         <App />
 //     </StrictMode>,
 // )
+
+createRoot(document.getElementById('root')).render(
+    <App />
+)
+

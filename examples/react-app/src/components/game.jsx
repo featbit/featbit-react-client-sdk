@@ -3,6 +3,7 @@ import {context, withFbProvider} from "@featbit/react-client-sdk";
 import {configWithUser, userName} from "../config.js";
 import UserInfo from "./userInfo.jsx";
 import Board from "./board.jsx";
+import TwoFlagsComponent from "./TwoFlagsComponent.jsx";
 
 class Game extends React.Component {
     constructor(props) {
@@ -124,6 +125,8 @@ class Game extends React.Component {
                         this.state.showWinEffect === 'true' ? <WinBoard playerName={winner}/> : null
                     }
 
+                    <TwoFlagsComponent></TwoFlagsComponent>
+
                 </div>
                 <div className="game-info">
                     <div>Against：{flags.robot}</div>
@@ -157,7 +160,7 @@ function calculateWinner(squares) {
 }
 
 // Uncomment the following line to use withFbProvider
-//export default withFbProvider(configWithUser)(Game);
+export default withFbProvider(configWithUser)(Game);
 
 // Uncommennt the following line to use asyncWithFbProvider
-export default Game;
+//export default Game;
