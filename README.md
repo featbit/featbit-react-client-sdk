@@ -74,8 +74,8 @@ function APP() {
         customizedProperties: []
       },
       sdkKey: 'YOUR ENVIRONMENT SECRET',
-      streamingUrl: 'THE STREAMING URL',
-      eventsUrl: 'THE EVENTS URL'
+      streamingUri: 'THE STREAMING URL',
+      eventsUri: 'THE EVENTS URL'
     }
   };
   
@@ -126,11 +126,11 @@ import { asyncWithFbProvider } from '@featbit/react-client-sdk';
   const config = {
     options: {
       sdkKey: 'YOUR ENVIRONMENT SECRET',
-      streamingUrl: 'THE STREAMING URL',
-      eventsUrl: 'THE EVENTS URL',
+      streamingUri: 'THE STREAMING URL',
+      eventsUri: 'THE EVENTS URL',
       user: {
-        userName: 'USER NAME',
-        id: 'USER ID',
+        name: 'USER NAME',
+        keyId: 'USER ID',
         customizedProperties: [
           {
             "name": "age",
@@ -170,11 +170,11 @@ import { withFbProvider } from '@featbit/react-client-sdk';
 const config = {
   options: {
     sdkKey: 'YOUR ENVIRONMENT SECRET',
-    streamingUrl: 'THE STREAMING URL',
-    eventsUrl: 'THE EVENTS URL',
+    streamingUri: 'THE STREAMING URL',
+    eventsUri: 'THE EVENTS URL',
     user: {
-      userName: 'USER NAME',
-      id: 'USER ID',
+      name: 'USER NAME',
+      keyId: 'USER ID',
       customizedProperties: [
         {
           "name": "age",
@@ -217,11 +217,11 @@ The following is an example ProviderConfig object including each of the above pr
 {
   options: {
     sdkKey: 'YOUR ENVIRONMENT SECRET',
-    streamingUrl: 'THE STREAMING URL',
-    eventsUrl: 'THE EVENTS URL',
+    streamingUri: 'THE STREAMING URL',
+    eventsUri: 'THE EVENTS URL',
     user: {
-      userName: 'USER NAME',
-      id: 'USER ID',
+      name: 'USER NAME',
+      keyId: 'USER ID',
       customizedProperties: [
         {
           "name": "age",
