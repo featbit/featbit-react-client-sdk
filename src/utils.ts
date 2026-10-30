@@ -1,6 +1,6 @@
 import { IEvalDetail, IFbClient } from '@featbit/js-client-sdk';
 import camelCase from 'lodash.camelcase';
-import { IFlagSet } from "./types";
+import { IFlagSet } from "./types.js";
 
 /**
  * Transforms a set of flags so that their keys are camelCased. This function ignores

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import context, { FbContext } from './context';
-import { IFlagSet } from "./types";
+import context, { FbContext } from './context.js';
+import { IFlagSet } from "./types.js";
 
 /**
  * `useFlags` is a custom hook which returns all feature flags. It uses the `useContext` primitive

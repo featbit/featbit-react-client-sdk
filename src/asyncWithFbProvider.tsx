@@ -1,9 +1,9 @@
 import React, { useState, useEffect, ReactNode } from 'react';
-import { ProviderConfig, defaultReactOptions, IFlagSet } from './types';
-import { Provider } from './context';
-import getFlagsProxy from "./getFlagsProxy";
+import { ProviderConfig, defaultReactOptions, IFlagSet } from './types.js';
+import { Provider } from './context.js';
+import getFlagsProxy from "./getFlagsProxy.js";
 import { FbClientBuilder } from "@featbit/js-client-sdk";
-import { fetchFlags } from "./utils";
+import { fetchFlags } from "./utils.js";
 
 /**
  * This is an async function which initializes feature-flags.co's JS SDK (`@featbit/js-client-sdk`)

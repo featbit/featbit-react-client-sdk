@@ -1,6 +1,6 @@
 import { IFbClient } from '@featbit/js-client-sdk';
 import { createContext } from 'react';
-import { FlagKeyMap, IFlagSet } from "./types";
+import { FlagKeyMap, IFlagSet } from "./types.js";
 
 interface FbContext {
   flags: IFlagSet;

@@ -1,4 +1,4 @@
-import { FlagKeyMap, IFlagSet } from "./types";
+import { FlagKeyMap, IFlagSet } from "./types.js";
 import { IFbClient } from "@featbit/js-client-sdk";
 
 export interface ProviderState {

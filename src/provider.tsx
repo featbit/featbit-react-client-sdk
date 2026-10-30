@@ -1,11 +1,11 @@
 import React, { Component, PropsWithChildren }  from "react";
-import { EnhancedComponent, ProviderConfig, defaultReactOptions, IFlagSet } from './types';
-import { Provider } from './context';
-import { camelCaseKeys, fetchFlags } from "./utils";
+import { EnhancedComponent, ProviderConfig, defaultReactOptions, IFlagSet } from './types.js';
+import { Provider } from './context.js';
+import { camelCaseKeys, fetchFlags } from "./utils.js";
 import { FbClientBuilder, IFbClient } from '@featbit/js-client-sdk';
-import getFlagsProxy from "./getFlagsProxy";
-import { ProviderState } from "./providerState";
-import { IFlagBase } from "@featbit/js-client-sdk/dist/esm/evaluation";
+import getFlagsProxy from "./getFlagsProxy.js";
+import { ProviderState } from "./providerState.js";
+import type { IFlagBase } from "@featbit/js-client-sdk";
 
 
 /**

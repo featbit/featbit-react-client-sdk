@@ -1,4 +1,4 @@
-import { defaultReactOptions, FbReactOptions, FlagKeyMap, IFlagSet } from "./types";
+import { defaultReactOptions, FbReactOptions, FlagKeyMap, IFlagSet } from "./types.js";
 import { IConvertResult, IFbClient, IFlagBase, ValueConverters, VariationDataType } from "@featbit/js-client-sdk";
 import camelCase from "lodash.camelcase";
 

@@ -3,7 +3,7 @@
     "outDir": "dist",
     "target": "es5",
     "lib": ["es6", "esnext", "dom"],
-    "module": "esnext",
+    "module": "NodeNext",
     "declaration": true,
     "sourceMap": true,
     "sourceRoot": "../src",
@@ -12,7 +12,7 @@
     "strictNullChecks": true,
     "jsx": "react",
     "esModuleInterop": true,
-    "moduleResolution": "Node"
+    "moduleResolution": "NodeNext"
   },
   "include": ["src"],
   "exclude": ["node_modules", "lib", "dist"]
