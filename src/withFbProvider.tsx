@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { defaultReactOptions, ProviderConfig } from './types';
-import FbProvider from './provider';
+import { defaultReactOptions, ProviderConfig } from './types.js';
+import FbProvider from './provider.js';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import IntrinsicAttributes = React.JSX.IntrinsicAttributes;
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Consumer, FbContext } from './context';
+import { Consumer, FbContext } from './context.js';
 import { IFbClient } from '@featbit/js-client-sdk';
-import { IFlagSet } from "./types";
+import { IFlagSet } from "./types.js";
 
 /**
  * Controls the props the wrapped component receives from the `FbConsumer` HOC.

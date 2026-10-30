@@ -1,13 +1,13 @@
-import asyncWithFbProvider from './asyncWithFbProvider';
-import context from './context';
-import FbProvider from './provider';
-import useFlags from './useFlags';
-import useFbClient from './useFbClient';
-import { camelCaseKeys } from './utils';
-import withFbConsumer from './withFbConsumer';
-import withFbProvider from './withFbProvider';
+import asyncWithFbProvider from './asyncWithFbProvider.js';
+import context from './context.js';
+import FbProvider from './provider.js';
+import useFlags from './useFlags.js';
+import useFbClient from './useFbClient.js';
+import { camelCaseKeys } from './utils.js';
+import withFbConsumer from './withFbConsumer.js';
+import withFbProvider from './withFbProvider.js';
 
-export * from './types';
+export * from './types.js';
 
 export {
   FbProvider,

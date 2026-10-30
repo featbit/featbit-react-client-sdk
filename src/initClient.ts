@@ -1,6 +1,6 @@
-import { AllFlagsFbClient, defaultReactOptions, FbReactOptions } from './types';
+import { AllFlagsFbClient, defaultReactOptions, FbReactOptions } from './types.js';
 import { FbClientBuilder, IOptions, IPlatform } from '@featbit/js-client-sdk';
-import { fetchFlags } from "./utils";
+import { fetchFlags } from "./utils.js";
 
 /**
  * Internal function to initialize the `@featbit/js-client-sdk`.
