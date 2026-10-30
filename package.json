@@ -26,7 +26,7 @@
     "lint": "tslint -p tsconfig.json 'src/**/*.ts*'",
     "lint:all": "npm run lint",
     "check-typescript": "tsc",
-    "prepublishOnly": "npm run build & test:package",
+    "prepublishOnly": "npm run build && npm run test:package",
     "prettier": "prettier --write 'src/*.@(js|ts|tsx|json|css)'",
     "test:package": "node scripts/test-package.cjs"
   },
